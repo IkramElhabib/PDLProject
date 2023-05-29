@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 
 @Entity
+
 public class Client {
 	public String getCode() {
 		return code;

@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import jakarta.servlet.Filter;
 
@@ -26,8 +27,7 @@ import jakarta.servlet.Filter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
-	
-	  static HashMap<String, String> pages = new HashMap<String, String>() {{
+	/* static HashMap<String, String> pages = new HashMap<String, String>() {{
 	        put("SHOW_DASHBOARD", "/");
 	        put("SHOW_STATISTIQUES", "/statistiques");
 	        put("SHOW_DOSSIERS", "/dossiers");
@@ -84,7 +84,8 @@ public class SecurityConfig{
 	                    .requestMatchers("/masociete").authenticated()
 	            );
 
-	            http.formLogin(Customizer.withDefaults())
+	            http.formLogin((form) -> form
+                     .loginPage("/login"))
 	                    .exceptionHandling(configurer -> configurer.accessDeniedPage("/403"));
 	        }
 	    }
@@ -116,9 +117,8 @@ public class SecurityConfig{
 
 	        http.authorizeHttpRequests().anyRequest().denyAll();
 	    }
-
+	       
 	 	
-}
-
+}*/
 
 }

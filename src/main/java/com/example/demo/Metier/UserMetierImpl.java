@@ -25,7 +25,7 @@ public class UserMetierImpl implements IUserMetier
 	@Override
 	public User getUser(String code) {
 		try { 
-			return cltRep.findByUserName(code);
+			return cltRep.findByUsername(code);
 		} catch (Exception e) {return null;} 
 	}
 
@@ -36,7 +36,7 @@ public class UserMetierImpl implements IUserMetier
 
 	@Override
 	public boolean deleteUser(String code) { 
-		User frs = cltRep.findByUserName(code);
+		User frs = cltRep.findByUsername(code);
 		if(frs!=null) {
 			cltRep.delete(frs);
 			return true;

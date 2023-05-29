@@ -80,7 +80,7 @@ public class UserController {
 	 
 	 @PostMapping("/users/add")
 	    public String addUser(@Valid User user, BindingResult result, Model model) {
-	        if (userRepository.findByUserName(user.getUsername()) != null) {
+	        if (userRepository.findByUsername(user.getUsername()) != null) {
 	            result.rejectValue("username", "error.user", "Nom d'utilisateur déjà existant !");
 	        }
 
@@ -95,7 +95,7 @@ public class UserController {
 	 
 	 @PostMapping("/users/update")
 	    public String updateUser(@Valid User user, BindingResult result, Model model) {
-	        User existingUser = userRepository.findByUserName(user.getUsername());
+	        User existingUser = userRepository.findByUsername(user.getUsername());
 	        if (existingUser == null) {
 	            result.rejectValue("username", "error.user", "Cet utilisateur n'existe pas !");
 	        } else if (saveUser(user, result, model)) {
@@ -118,7 +118,7 @@ public class UserController {
 	            return false;
 	        }
 
-	        User savedUser = userRepository.findByUserName(user.getUsername());
+	        User savedUser = userRepository.findByUsername(user.getUsername());
 	        if (savedUser != null && savedUser.getRoles() != null) {
 	            for (UsersRoles ur : savedUser.getRoles()) {
 	                if (userRoles.get(ur.getRole().getRole()) == null) {
@@ -145,16 +145,16 @@ public class UserController {
 	        clearRoles();
 	        return true;
 	    }
-	 @PostMapping("/users/delete")
+	/*@PostMapping("/users/delete")
 	    public String deleteUser(Model model, @RequestParam(name = "username", defaultValue = "0") String username) {
 	        userRepository.deleteById(username);
 	        model.addAttribute("deleteOk", "Utilisateur " + username + " est supprimé");
 	        return "redirect:/users?p=0&s=8&mc=";
-	    }
+	    }*/
 
 	    @PostMapping(value = "/users/get", produces = "application/json")
 	    public @ResponseBody User getUser(@RequestParam(name = "username") String username) {
-	        return userRepository.findByUserName(username);
+	        return userRepository.findByUsername(username);
 	    }
 	    
 	    @PostMapping(value = "/users/storeuserrole", produces = "application/json")
@@ -257,6 +257,9 @@ public class UserController {
 	            return ".montheme{background-color: #FFF;}";
 	        }
 	    }
+	    
+	   
+	    
 	
 	
 }
