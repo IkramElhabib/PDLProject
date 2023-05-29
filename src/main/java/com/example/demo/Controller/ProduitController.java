@@ -44,7 +44,7 @@ public class ProduitController {
 		if(!model.containsAttribute("produit"))
 		model.addAttribute("produit", new Produit()); 
 		
-		return "produits"; 
+		return "listProduits"; 
 	}
 	
 	@RequestMapping(value= {"/produits/add"}, method=RequestMethod.POST)
