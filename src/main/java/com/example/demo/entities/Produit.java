@@ -15,7 +15,7 @@ import lombok.*;
 @Entity
 public class Produit
 { 
-	@Id @Nonnull 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String ref; 
 	 private String designation; 
 	@DecimalMin("0")  private double prix; 
