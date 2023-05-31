@@ -13,5 +13,7 @@ public interface ProduitRepository extends JpaRepository<Produit, String>
 	@Query("select p from Produit p where p.ref=:x")
 	public Produit getById( @Param("x")String ref );
 	
+	Produit save(Produit produit);
+	
 
 }

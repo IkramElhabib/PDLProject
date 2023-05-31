@@ -9,13 +9,15 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
 @Entity
 public class Produit
 { 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@NotNull
 	private String ref; 
 	 private String designation; 
 	@DecimalMin("0")  private double prix; 
@@ -100,6 +102,16 @@ public class Produit
 
 	public Produit() {
 		super();
+	}
+
+	public Produit(@NotNull String ref, String designation, @DecimalMin("0") double prix, @Min(0) int quantite,
+			@Min(0) int quantiteAlert) {
+		super();
+		this.ref = ref;
+		this.designation = designation;
+		this.prix = prix;
+		this.quantite = quantite;
+		this.quantiteAlert = quantiteAlert;
 	}
 	
 	

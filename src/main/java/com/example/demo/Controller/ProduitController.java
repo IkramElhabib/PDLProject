@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.IMetier.IProduitMetier;
 import com.example.demo.IMetier.ITvaMetier;
+import com.example.demo.dao.ProduitRepository;
 import com.example.demo.entities.Produit;
+
 
 import jakarta.validation.Valid;
 
@@ -23,6 +28,7 @@ public class ProduitController {
 	
 	@Autowired private IProduitMetier metierProduit;
 	@Autowired private ITvaMetier metierTva;
+	@Autowired ProduitRepository produitRepository;
 	
 	// GET -------------------------------------------------------------
 	@RequestMapping(value= {"/produits"})
@@ -47,6 +53,17 @@ public class ProduitController {
 		return "listProduits"; 
 	}
 	
+	 @GetMapping("/ajouterProduit")
+	    public String afficherFormulaireAjoutProd(Model model) {
+	        model.addAttribute("produit", new Produit());
+	        return "ajoutProduit";
+	    }
+	  @PostMapping("/addProd")
+	    public String ajouterDep(@ModelAttribute Produit produit) {
+		  produitRepository.save(produit);
+	        return "redirect:/ajouterProduit";
+	    }
+	 
 	@RequestMapping(value= {"/produits/add"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public String addProduit(@Valid Produit produit, BindingResult result, Model model) 
 	{    	
