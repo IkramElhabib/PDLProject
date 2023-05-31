@@ -47,7 +47,7 @@ public class ProduitController {
 		return "listProduits"; 
 	}
 	
-	@RequestMapping(value= {"/produits/add"}, method=RequestMethod.POST)
+	@RequestMapping(value= {"/produits/add"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public String addProduit(@Valid Produit produit, BindingResult result, Model model) 
 	{    	
 		metierProduit.getProduit(produit.getRef());
