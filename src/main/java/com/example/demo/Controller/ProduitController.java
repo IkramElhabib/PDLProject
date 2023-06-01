@@ -132,7 +132,7 @@ public class ProduitController {
 
 
 	
-	@RequestMapping(value="/produits/update",method=RequestMethod.POST)
+	/*@RequestMapping(value="/produits/update",method=RequestMethod.POST)
 	public String updateProduit(@Valid Produit produit, BindingResult result, Model model) 
 	{    
 		if(saveProduit(produit,result,model)) 
@@ -140,9 +140,9 @@ public class ProduitController {
 		else model.addAttribute("updateField","");
 		model.addAttribute("produit",produit); 
 		return index(model,0,8,"");
-	} 
+	} */
 	
-	 @GetMapping("/updateform")
+	/* @GetMapping("/updateform")
 	    public String showProduit(@PathVariable String ref, Model model) {
 	        Optional<Produit> produit = produitRepository.findByRef(ref);
 	        if (produit.isPresent()) {
@@ -151,7 +151,7 @@ public class ProduitController {
 	        } else {
 	            return "ajoutProduit";
 	        }
-	    }
+	    }*/
 	    
 	   
 	
@@ -182,6 +182,12 @@ public class ProduitController {
 		Produit p = metierProduit.getProduit(ref); 
 		return p;
 	}
+	
+	  @GetMapping("/deleteProd/{ref}")
+	    public String delProd(@PathVariable("ref") String ref) {
+	        produitRepository.deleteById(ref);
+	        return "redirect:/listProd";
+	    }
 	
 	
 	

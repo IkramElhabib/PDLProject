@@ -435,7 +435,7 @@ $(document).ready(function(){
             <td th:text="${produit.quantiteAlert}"></td>
             <td>
                 <a th:href="@{/produit/{ref}(ref=${produit.ref})}" class="edit" data-toggle="modal">modifier</a>
-                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                <a th:href="@{/deleteProd/{ref}(ref=${produit.ref})}" class="delete" data-toggle="modal">supprimer</a>
             </td>
         </tr>
     </tbody>
