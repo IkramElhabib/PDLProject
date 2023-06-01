@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.IMetier.IProduitMetier;
 import com.example.demo.IMetier.ITvaMetier;
@@ -77,8 +78,13 @@ public class ProduitController {
 	     }
 
 	     produitRepository.save(produit);
+
+	     // Add success message to the model
+	     model.addAttribute("successMessage", "Produit ajouté avec succès.");
+
 	     return "redirect:/produits/add";
 	 }
+
 	 
 	 @GetMapping("/listProd")
 	    public String afficherListeProduits(Model model) {
@@ -104,6 +110,27 @@ public class ProduitController {
 		
 		return index(model,0,8,"");
 	}*/
+	 
+	 @GetMapping("/produit/{ref}")
+	 public String afficherProduit(@PathVariable("ref") String ref, Model model) {
+	     Optional<Produit> produit = produitRepository.findByRef(ref);
+	     if (produit.isPresent()) {
+	         model.addAttribute("produit", produit.get());
+	         return "updateproduit";
+	     } else {
+	         // Le produit n'a pas été trouvé, rediriger ou afficher un message d'erreur
+	         return "redirect:/listProd";
+	     }
+	 }
+	 
+	 @PostMapping("/produit/{ref}")
+	    public String updateProd(@PathVariable String ref, @RequestParam String designation, @RequestParam double prix, @RequestParam int quantite, @RequestParam int quantiteAlert, Model model, RedirectAttributes redirectAttributes) {
+	        produitRepository.updateProduit(ref, designation, prix, quantite, quantiteAlert);
+	        redirectAttributes.addFlashAttribute("successMessage", "Le produit a été modifiée avec succès !");
+	        return "redirect:/listProd";
+	    }
+
+
 	
 	@RequestMapping(value="/produits/update",method=RequestMethod.POST)
 	public String updateProduit(@Valid Produit produit, BindingResult result, Model model) 
