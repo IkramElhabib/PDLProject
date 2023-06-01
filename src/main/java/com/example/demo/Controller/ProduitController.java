@@ -1,6 +1,9 @@
 package com.example.demo.Controller;
 
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,18 +57,37 @@ public class ProduitController {
 		return "listProduits"; 
 	}
 	
-	 @GetMapping("/ajouterProduit")
+	 @GetMapping("/produits/add")
 	    public String afficherFormulaireAjoutProd(Model model) {
 	        model.addAttribute("produit", new Produit());
 	        return "ajoutProduit";
 	    }
-	  @PostMapping("/addProd")
-	    public String ajouterDep(@ModelAttribute Produit produit) {
-		  produitRepository.save(produit);
-	        return "redirect:/ajouterProduit";
-	    }
+	 @PostMapping("/addProd")
+	 public String ajouterProduit(@ModelAttribute @Valid Produit produit, BindingResult bindingResult, Model model) {
+	     if (bindingResult.hasErrors()) {
+	         // If there are validation errors, return to the form with the error messages
+	         return "ajoutProduit";
+	     }
+
+	     Optional<Produit> existingProduit = produitRepository.findByRef(produit.getRef());
+	     if (existingProduit.isPresent()) {
+	         // Add a field error for the "ref" field
+	         bindingResult.rejectValue("ref", "error.produit", "La référence existe déjà. Veuillez la changer.");
+	         return "ajoutProduit";
+	     }
+
+	     produitRepository.save(produit);
+	     return "redirect:/produits/add";
+	 }
 	 
-	@RequestMapping(value= {"/produits/add"}, method = {RequestMethod.GET, RequestMethod.POST})
+	 @GetMapping("/listProd")
+	    public String afficherListeProduits(Model model) {
+	        List<Produit> produits = produitRepository.findAll();
+	        model.addAttribute("produits", produits);
+	        return "listProduits";
+	    }
+
+	/*@RequestMapping(value= {"/produits/add"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public String addProduit(@Valid Produit produit, BindingResult result, Model model) 
 	{    	
 		metierProduit.getProduit(produit.getRef());
@@ -80,7 +103,7 @@ public class ProduitController {
 		}
 		
 		return index(model,0,8,"");
-	}
+	}*/
 	
 	@RequestMapping(value="/produits/update",method=RequestMethod.POST)
 	public String updateProduit(@Valid Produit produit, BindingResult result, Model model) 
@@ -91,6 +114,19 @@ public class ProduitController {
 		model.addAttribute("produit",produit); 
 		return index(model,0,8,"");
 	} 
+	
+	 @GetMapping("/updateform")
+	    public String showProduit(@PathVariable String ref, Model model) {
+	        Optional<Produit> produit = produitRepository.findByRef(ref);
+	        if (produit.isPresent()) {
+	            model.addAttribute("produit", produit.get());
+	            return "formupdate";
+	        } else {
+	            return "ajoutProduit";
+	        }
+	    }
+	    
+	   
 	
 	private boolean saveProduit(Produit produit, BindingResult result, Model model)
 	{

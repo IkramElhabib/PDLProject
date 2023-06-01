@@ -239,9 +239,12 @@ body {
   	<form method="post" th:action="@{/addProd}">
     <h2>Register</h2>
     <p class="hint-text">Create your account. It's free and only takes a minute.</p>
+		    
     <div class="form-group">
         <div class="row">
          <div class="col"><input type="text" class="form-control" th:field="${produit.ref}" placeholder="Ref" required="required"></div>
+                   <small th:if="${#fields.hasErrors('produit.ref')}" th:errors="${produit.ref}" class="text-danger"></small>
+            
             <div class="col"><input type="text" class="form-control" th:field="${produit.designation}" placeholder="Designation" required="required"></div>
         </div>
     </div>
