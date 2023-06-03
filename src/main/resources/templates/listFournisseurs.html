@@ -283,10 +283,10 @@ table.table .avatar {
         <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-lock fa-fw me-3"></i><span>Gestion Des Clients</span></a
         >
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/listFournisseur" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-chart-line fa-fw me-3"></i><span>Gestion Des Fournisseurs</span></a
         >
         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
@@ -295,7 +295,7 @@ table.table .avatar {
         <a href="#" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Gestion Des Dossiers</span></a
         >
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-globe fa-fw me-3"></i><span>Gestion Des Produits</span></a
         >
         <a href="#" class="list-group-item list-group-item-action py-2 ripple"
@@ -367,7 +367,14 @@ table.table .avatar {
   <div class="table-responsive">
 		<div class="table-wrapper">
 			<div class="table-title">
-				<h2>liste des produits</h2>
+				<h2>liste des fournisseurs</h2>
+				<div class="mb-3">
+				  <a href="/fournisseur/add" class="btn btn-primary">
+				    <span class="fw-bold me-2">+</span>
+				    Ajouter Fournisseur
+				  </a>
+				</div>
+				
 			</div>
 			<table class="table table-striped table-hover">
     <thead>
