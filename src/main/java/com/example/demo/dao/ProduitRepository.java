@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,10 @@ public interface ProduitRepository extends JpaRepository<Produit, String>
     void updateProduit(@Param("ref") String ref, @Param("designation") String titre, @Param("prix") double prix, @Param("quantite") int quantite, @Param("quantiteAlert") int quantiteAlert);
     
     void delete(Produit produit);
+    
+    
+     List<Produit> findAll() ;
+    
 
 	
 

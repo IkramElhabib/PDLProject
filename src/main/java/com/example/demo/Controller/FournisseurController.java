@@ -1,18 +1,28 @@
 package com.example.demo.Controller;
 
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.IMetier.IFournisseurMetier;
+import com.example.demo.dao.FournisseurRepository;
 import com.example.demo.entities.Fournisseur;
+import com.example.demo.entities.Produit;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +33,11 @@ public class FournisseurController {
 	
 	@Autowired
 	private IFournisseurMetier metierFournisseur;
+	private final FournisseurRepository fournisseurRepository;
+	
+	 public FournisseurController(FournisseurRepository fournisseurRepository) {
+	        this.fournisseurRepository = fournisseurRepository;
+	    }
 	
 	@RequestMapping(value= {"/fournisseurs"})
 	public String index
@@ -96,6 +111,65 @@ public class FournisseurController {
 		Fournisseur frs = metierFournisseur.getFournisseur(code);  
 		return frs;
 	}
+	 @GetMapping("/fournisseur/add")
+	    public String ajouterFournisseur(Model model) {
+		 model.addAttribute("fournisseur", new Fournisseur());
+	        return "ajoutFournisseur";
+	    }
+	 
+	 @PostMapping("/fournisseuradd")
+	 public String ajouterFournisseur(@ModelAttribute @Valid Fournisseur fournisseur, BindingResult bindingResult, Model model) {
+	     if (bindingResult.hasErrors()) {
+	         // If there are validation errors, return to the form with the error messages
+	         return "listProduits";
+	     }
+	     Fournisseur existingFournisseur = fournisseurRepository.findByCode(fournisseur.getCode());
+	     if (existingFournisseur != null) {
+	         // Add a field error for the "code" field
+	         bindingResult.rejectValue("code", "error.fournisseur", "La référence existe déjà. Veuillez la changer.");
+	         return "ajoutFournisseur";
+	     }
+
+	     fournisseurRepository.save(fournisseur);
+
+	     // Add success message to the model
+	     model.addAttribute("successMessage", "Fournisseur ajouté avec succès.");
+
+	     return "redirect:/fournisseur/add";
+	 }
+	 
+	 @GetMapping("/listFournisseur")
+	    public String afficherListeFournisseur(Model model) {
+	        List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+	        model.addAttribute("fournisseurs", fournisseurs);
+	        return "listFournisseurs";
+	    }
+	 @GetMapping("/fournisseur/{code}")
+	 public String afficherFournisseur(@PathVariable("code") String code, Model model) {
+	     Fournisseur fournisseur = fournisseurRepository.findByCode(code);
+	     if (fournisseur !=null) {
+	         model.addAttribute("fournisseur", fournisseur);
+	         return "updatefournisseur";
+	     } else {
+	         // Le fournisseur n'a pas été trouvé, rediriger ou afficher un message d'erreur
+	         return "redirect:/listFournisseur";
+	     }
+	 }
+	 
+	 @PostMapping("/fournisseur/{code}")
+	    public String updateF(@PathVariable String code, @RequestParam String nom, @RequestParam String email, @RequestParam String raisonSociale, @RequestParam String adresse, @RequestParam Double capital, @RequestParam String tel, @RequestParam String fax, Model model, RedirectAttributes redirectAttributes) {
+	        fournisseurRepository.updateFournisseur(code, nom, email, raisonSociale, adresse, capital, tel, fax);
+	        redirectAttributes.addFlashAttribute("successMessage", "Le fournisseur a été modifiée avec succès !");
+	        return "redirect:/listFournisseur";
+	    }
+	 
+	 @GetMapping("/deleteFournisseur/{code}")
+	    public String deleteFourn(@PathVariable("code") String code) {
+	        fournisseurRepository.deleteById(code);
+	        return "redirect:/listFournisseur";
+	    }
+	
+
 	
 	
 
