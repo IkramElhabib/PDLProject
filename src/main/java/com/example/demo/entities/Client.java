@@ -6,13 +6,31 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
 @Entity
 
 public class Client {
+
+	@Id @Nonnull 
+	private String code;
+	
+	
+	private String nom;
+	
+	
+	private String prenom;
+	
+	
+	private int age;
+	 
+	
+	private String adresse; 
+	@Email @NotBlank
+	private String email;
+	
+	private String tel; 
+	
+	
+	
 	public String getCode() {
 		return code;
 	}
@@ -68,23 +86,4 @@ public class Client {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-
-	@Id @Nonnull 
-	private String code;
-	
-	
-	private String nom;
-	
-	
-	private String prenom;
-	
-	
-	private int age;
-	 
-	
-	private String adresse; 
-	@Email @NotBlank
-	private String email;
-	
-	private String tel; 
 }

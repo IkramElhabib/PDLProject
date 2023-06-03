@@ -13,6 +13,7 @@ public class Tva
 	private Long code; 
 	private String designation;
 	private float taux;
+	
 	public Tva(Long code, String designation, float taux) {
 		super();
 		this.code = code;
