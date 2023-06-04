@@ -206,6 +206,7 @@ body {
         />
       </a>
       <!-- Search form -->
+      
       <form class="d-none d-md-flex input-group w-auto my-auto">
         <input
           autocomplete="off"
@@ -236,7 +237,9 @@ body {
 <!--Main layout-->
 <main style="margin-top: 58px;">
   <div class="container pt-4">
- 
+ <div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Nouveau Produit</h5>
   	<form method="post" th:action="@{/addProd}">
     <h2>Register</h2>
     <p class="hint-text">Create your account. It's free and only takes a minute.</p>
@@ -265,7 +268,8 @@ body {
         <button type="submit" class="btn btn-success btn-lg btn-block">Ajouter</button>
     </div>
 </form>
-  	
+</div>
+</div> 	
   </div>
 </main>
 <!--Main layout-->

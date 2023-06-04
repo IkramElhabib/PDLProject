@@ -2,8 +2,10 @@ package com.example.demo.Controller;
 
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +25,7 @@ import com.example.demo.IMetier.ICommandeMetier;
 import com.example.demo.IMetier.IDossierMetier;
 import com.example.demo.IMetier.IFactureMetier;
 import com.example.demo.IMetier.IUserMetier;
+import com.example.demo.dao.DossierRepository;
 import com.example.demo.entities.Dossier;
 import com.example.demo.entities.User;
 
@@ -33,6 +40,12 @@ public class DossierController {
 	@Autowired private IFactureMetier metierFct; 
 	@Autowired private IUserMetier metierUser;    
 	@Autowired private HttpSession session;
+	
+	DossierRepository dossierRepository;
+	
+	public DossierController(DossierRepository dossierRepository) {
+		this.dossierRepository=dossierRepository;
+	}
 	
 	@RequestMapping(value= {"/dossiers"})
 	public String index( 
@@ -125,7 +138,7 @@ public class DossierController {
 		}
 		 
 		if(dos.getNumero() == null) {
-			dos.setDateCreation(new Date());
+			dos.setDateCreation(LocalDateTime.now());
 			model.addAttribute("addOk",true);
 		}
 		else model.addAttribute("updateOk",true); 
@@ -178,4 +191,74 @@ public class DossierController {
 		model.addAttribute("nbrv",metierFct.getNombreVentes(num));
 		return index(model,0,20,"","","","","");
 	} 
+	/* ----------------------------------- */
+	
+	/*@PostMapping("/dossiers")
+	public String creerDossier(@RequestParam("nom") String nom) {
+	    Dossier dossier = new Dossier();
+	    dossier.setNom(nom);
+	    dossier.setDateCreation(LocalDateTime.now());
+	    dossierRepository.save(dossier);
+	    
+	    // Redirect to the appropriate page
+	    return "redirect:/dossiers";
+	}*/
+	/* @GetMapping("/dossiers")
+	    public String afficherFormulaire(Model model) {
+	        model.addAttribute("dossier", new Dossier());
+	        
+	        return "dossiers";
+	    }*/
+	@PostMapping("/dossiers")
+	public String creerDossier(@ModelAttribute("dossier") Dossier dossier) {
+	    dossier.setDateCreation(LocalDateTime.now());
+	    dossierRepository.save(dossier);
+	    
+	    // Redirect to the appropriate page
+	    return "redirect:/dossiers";
+	}
+
+
+
+    
+    @PostMapping("/dossiers/{numero}/fermer")
+    public String fermerDossier(@PathVariable("numero") Long numero) {
+        Dossier dossier = dossierRepository.findById(numero).orElse(null);
+        if (dossier != null) {
+            dossier.setDateFermeture(LocalDate.now());
+            dossierRepository.save(dossier);
+        }
+        
+        // Redirection vers une autre page ou une réponse appropriée
+        return "redirect:/dossiers";
+    }
+    
+    @GetMapping("/dossier/open")
+    public String ajouterDossier(Model model) {
+	 model.addAttribute("dossier", new Dossier());
+        return "ouvrirdossier";
+    }
+ 
+ @PostMapping("/dossieradd")
+ public String ajouterDossier(@ModelAttribute @Valid Dossier dossier, BindingResult bindingResult, Model model) {
+     if (bindingResult.hasErrors()) {
+         // If there are validation errors, return to the form with the error messages
+         return "listProduits";
+     }
+     Dossier existingDossier = dossierRepository.findByNumero(dossier.getNumero());
+     if (existingDossier != null) {
+         // Add a field error for the "code" field
+         bindingResult.rejectValue("numero", "error.dossier", "Ce nom de dossier existe déjà. Veuillez la changer.");
+         return "ouvrirdossier";
+     }
+
+     dossierRepository.save(dossier);
+
+     // Add success message to the model
+     model.addAttribute("successMessage", "Dossier crée avec succès.");
+
+     return "redirect:/fournisseur/add";
+ }
+ 
+	
 }

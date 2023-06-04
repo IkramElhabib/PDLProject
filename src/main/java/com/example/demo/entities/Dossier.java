@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.hibernate.annotations.NotFound;
@@ -19,12 +21,12 @@ public class Dossier
 	
 	private String nom;
  
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dateCreation;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateCreation;
 	 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Nullable
-	private Date dateFermeture;
+	private LocalDate dateFermeture;
 	
 	@ManyToOne
 	@JoinColumn(name="USERNAME") 
@@ -47,19 +49,19 @@ public class Dossier
 		this.nom = nom;
 	}
 
-	public Date getDateCreation() {
+	public LocalDateTime getDateCreation() {
 		return dateCreation;
 	}
 
-	public void setDateCreation(Date dateCreation) {
+	public void setDateCreation(LocalDateTime dateCreation) {
 		this.dateCreation = dateCreation;
 	}
 
-	public Date getDateFermeture() {
+	public LocalDate getDateFermeture() {
 		return dateFermeture;
 	}
 
-	public void setDateFermeture(Date dateFermeture) {
+	public void setDateFermeture(LocalDate dateFermeture) {
 		this.dateFermeture = dateFermeture;
 	}
 
@@ -71,7 +73,7 @@ public class Dossier
 		this.user = user;
 	}
 
-	public Dossier(Long numero, String nom, Date dateCreation, Date dateFermeture, User user) {
+	public Dossier(Long numero, String nom, LocalDateTime dateCreation, LocalDate dateFermeture, User user) {
 		super();
 		this.numero = numero;
 		this.nom = nom;
@@ -79,6 +81,28 @@ public class Dossier
 		this.dateFermeture = dateFermeture;
 		this.user = user;
 	}
+
+	public Dossier(Long numero, String nom, LocalDateTime dateCreation, LocalDate dateFermeture) {
+		super();
+		this.numero = numero;
+		this.nom = nom;
+		this.dateCreation = dateCreation;
+		this.dateFermeture = dateFermeture;
+	}
+
+	public Dossier() {
+		super();
+	}
+	public Dossier(Long numero, String nom, LocalDateTime dateCreation) {
+		super();
+		this.numero = numero;
+		this.nom = nom;
+		this.dateCreation = dateCreation;
+	}
+	
+	
+	
+	
 	
 	
 	

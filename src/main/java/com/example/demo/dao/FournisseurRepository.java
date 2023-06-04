@@ -22,7 +22,7 @@ public interface FournisseurRepository extends JpaRepository<Fournisseur, String
 	//@Query("select frs from Fournisseur frs where frs.code = :x")
 	//public Fournisseur findByCode( @Param("x")String code );
  
-	Fournisseur  findByCode(String code);
+	Fournisseur findByCode(String code);
 	@Query("select p from Fournisseur p where ( p.code like :x or p.nom like :x or p.raisonSociale like :x or p.capital like :x or p.adresse like :x or p.email like :x or p.tel like :x or p.fax like :x ) and  p.code!='CODE_0'")
 	public Page<Fournisseur> findAllByMotCle( @Param("x")String mc, Pageable pageable );
 	
