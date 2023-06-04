@@ -16,12 +16,76 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 
 @Entity
 public class Commande {
+	
+	@Id @GeneratedValue
+	private long numero;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Nonnull
+	private Date dateCommande;
+	
+	@Nonnull
+	private boolean valide;
+	
+	@ManyToOne
+	@JoinColumn(name="CODE_CLIENT")
+	@Nullable 
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Client client;
+	
+	@ManyToOne 
+	@JoinColumn(name="CODE_FOURNISSEUR")
+	@Nullable  
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Fournisseur fournisseur;
+	
+	@OneToMany(mappedBy="commande",fetch=FetchType.LAZY)
+	private Collection<LigneCommande> lignesCommande;
+	
+	private double total;
+	
+	@ManyToOne
+	@JoinColumn(name="NUM_DOSSIER")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Dossier dossier;
+	
+	
+	public Commande(long numero, Date dateCommande, boolean valide, Client client, Fournisseur fournisseur,
+			Collection<LigneCommande> lignesCommande, double total, Dossier dossier) {
+		super();
+		this.numero = numero;
+		this.dateCommande = dateCommande;
+		this.valide = valide;
+		this.client = client;
+		this.fournisseur = fournisseur;
+		this.lignesCommande = lignesCommande;
+		this.total = total;
+		this.dossier = dossier;
+	}
+
+	
+	public Commande() {
+		super();
+	}
+	
+	
+
+	public Commande(long numero, Date dateCommande, boolean valide, Client client, Fournisseur fournisseur,
+			Collection<LigneCommande> lignesCommande, double total) {
+		super();
+		this.numero = numero;
+		this.dateCommande = dateCommande;
+		this.valide = valide;
+		this.client = client;
+		this.fournisseur = fournisseur;
+		this.lignesCommande = lignesCommande;
+		this.total = total;
+	}
+
+
 	public long getNumero() {
 		return numero;
 	}
@@ -86,35 +150,4 @@ public class Commande {
 		this.dossier = dossier;
 	}
 
-	@Id @GeneratedValue
-	private long numero;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Nonnull
-	private Date dateCommande;
-	
-	@Nonnull
-	private boolean valide;
-	
-	@ManyToOne
-	@JoinColumn(name="CODE_CLIENT")
-	@Nullable 
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Client client;
-	
-	@ManyToOne 
-	@JoinColumn(name="CODE_FOURNISSEUR")
-	@Nullable  
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Fournisseur fournisseur;
-	
-	@OneToMany(mappedBy="commande",fetch=FetchType.LAZY)
-	private Collection<LigneCommande> lignesCommande;
-	
-	private double total;
-	
-	@ManyToOne
-	@JoinColumn(name="NUM_DOSSIER")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Dossier dossier;
 }

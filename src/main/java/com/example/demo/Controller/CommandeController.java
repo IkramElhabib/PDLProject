@@ -4,7 +4,7 @@ package com.example.demo.Controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,10 @@ import com.example.demo.IMetier.ICommandeMetier;
 import com.example.demo.IMetier.IFournisseurMetier;
 import com.example.demo.IMetier.ILcMetier;
 import com.example.demo.IMetier.IProduitMetier;
+import com.example.demo.dao.ClientRepository;
+import com.example.demo.dao.CommandeRepository;
+import com.example.demo.dao.FournisseurRepository;
+import com.example.demo.dao.ProduitRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Commande;
 
@@ -44,6 +50,17 @@ public class CommandeController {
 	@Autowired private IProduitMetier metierProduit;
 	@Autowired private IFournisseurMetier metierFournisseur;
 	@Autowired private IClientMetier metierClient;
+	ClientRepository clientRepository;
+	CommandeRepository commandeRepository;
+	FournisseurRepository fournisseurRepository;
+	ProduitRepository produitRepository;
+	
+	public CommandeController(ClientRepository clientRepository, CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, ProduitRepository produitRepository) {
+		this.clientRepository =clientRepository;
+		this.commandeRepository = commandeRepository;
+		this.fournisseurRepository = fournisseurRepository;
+		this.produitRepository = produitRepository;
+	}
 	
 	@Autowired private HttpSession session;
 	
@@ -500,4 +517,37 @@ public class CommandeController {
 			
 			return commande;
 		}
+		
+		/*---------ikram's code version --------------- */
+		
+		 @GetMapping("/new")
+		    public String showNewCommandeForm(Model model) {
+		        Commande commande = new Commande();
+		        model.addAttribute("commande", commande);
+
+		        List<Client> clients = clientRepository.findAll();
+		        model.addAttribute("clients", clients);
+
+		        List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+		        model.addAttribute("fournisseurs", fournisseurs);
+
+		        List<Produit> produits = produitRepository.findAll();
+		        model.addAttribute("produits", produits);
+
+		        return "formulaire-nouvelle-commande";
+		    }
+		 
+		 @PostMapping("/new")
+		    public String addNewCommande(@ModelAttribute("commande") Commande commande,BindingResult bindingResult) {
+		        if (bindingResult.hasErrors()) {
+		            // Gérer les erreurs de validation si nécessaire
+		            return "formulaire-nouvelle-commande";
+		        }
+
+		        // Ajouter la commande
+		        commandeRepository.save(commande);
+
+		        return "formulaire-nouvelle-commande";
+		    }
+
 }
