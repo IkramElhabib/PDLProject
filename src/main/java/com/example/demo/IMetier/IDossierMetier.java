@@ -10,6 +10,7 @@ import com.example.demo.entities.Dossier;
 public interface IDossierMetier {
 	public List<Dossier> getDossiers();
 	
+	
 	public Page<Dossier> getDossiers(String nom, int page, int size);
 
 	public Page<Dossier> getDossiersByDateFermeture(String nom, Date dateFermeture, int page, int size); 

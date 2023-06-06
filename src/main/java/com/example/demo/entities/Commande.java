@@ -1,9 +1,10 @@
 package com.example.demo.entities;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -43,6 +44,7 @@ public class Commande {
 	private Fournisseur fournisseur;
 	
 	@OneToMany(mappedBy="commande",fetch=FetchType.LAZY)
+	//@OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<LigneCommande> lignesCommande;
 	
 	private double total;
@@ -65,13 +67,6 @@ public class Commande {
 		this.total = total;
 		this.dossier = dossier;
 	}
-
-	
-	public Commande() {
-		super();
-	}
-	
-	
 
 	public Commande(long numero, Date dateCommande, boolean valide, Client client, Fournisseur fournisseur,
 			Collection<LigneCommande> lignesCommande, double total) {
@@ -126,12 +121,13 @@ public class Commande {
 		this.fournisseur = fournisseur;
 	}
 
+	
 	public Collection<LigneCommande> getLignesCommande() {
-		return lignesCommande;
+	    return lignesCommande;
 	}
 
 	public void setLignesCommande(Collection<LigneCommande> lignesCommande) {
-		this.lignesCommande = lignesCommande;
+	    this.lignesCommande = lignesCommande;
 	}
 
 	public double getTotal() {
@@ -149,5 +145,21 @@ public class Commande {
 	public void setDossier(Dossier dossier) {
 		this.dossier = dossier;
 	}
+	
+	public Commande() {
+		super();
+        lignesCommande = new ArrayList<>();
+    }
+	public void addLigneCommande(LigneCommande ligneCommande) {
+	    ligneCommande.setCommande(this);
+	    lignesCommande.add(ligneCommande);
+	}
+
+	public Commande(long numero, Collection<LigneCommande> lignesCommande) {
+		super();
+		this.numero = numero;
+		this.lignesCommande = lignesCommande;
+	}
+
 
 }

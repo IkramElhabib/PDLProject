@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.Commande;
+import com.example.demo.entities.Dossier;
 
 @Repository
 public interface CommandeRepository extends JpaRepository<Commande, Long>
@@ -72,5 +74,13 @@ public interface CommandeRepository extends JpaRepository<Commande, Long>
 
 	@Query("select count(p) from Commande p where p.dateCommande between :d1 and :d2")
 	public Integer countBetween(@Param("d1")Date d1, @Param("d2")Date d2);
+	
+	/* ------------------------------- */
+	
+	List<Commande> findByClientIsNullAndFournisseurIsNotNull();
+    List<Commande> findByClientIsNotNullAndFournisseurIsNull();
+    List<Commande> findByDossier(Dossier dossier);
+	Commande save(Commande commande);
+	Commande findByNumero(long numero);
 	
 }

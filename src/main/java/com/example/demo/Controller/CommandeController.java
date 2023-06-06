@@ -233,7 +233,8 @@ public class CommandeController {
 		
 		return "nouveaucommande";
 	}
- 	@RequestMapping(value="/commandes/commander")
+	
+	@RequestMapping(value="/commandes/commander")
 	public String commanderproduit(Model model,@RequestParam(name="ref",defaultValue="0")String ref) 
 	{     
 		model.addAttribute("commande", new Commande()); 
@@ -252,7 +253,8 @@ public class CommandeController {
 		
 		return "nouveaucommande";
 	} 
- 	@RequestMapping(value= {"/commandes/add"}, method=RequestMethod.POST)
+	   
+	@PostMapping(value= {"/commandes/add"})
 	public String addCommande(@Valid Commande commande, BindingResult result, Model model) 
 	{    	 
 		HashMap<String,LigneCommande> lcs = (HashMap<String,LigneCommande>)session.getAttribute("lcs");
@@ -288,7 +290,8 @@ public class CommandeController {
 		
 		return "redirect:/commandes/get?numero="+commande.getNumero();
 	}
- 	
+	
+	 	
  	@RequestMapping(value="/commandes/edit",method=RequestMethod.GET)
 	public String editCommande(Model model, @RequestParam(name="numero",defaultValue="0")Long numero) 
 	{    
@@ -363,7 +366,7 @@ public class CommandeController {
 	}
 	//**************************** Lignes commandes ***************************
 	
-		@RequestMapping(value="/commandes/ligne/add",method=RequestMethod.POST)
+		@PostMapping(value="/commandes/ligne/add")
 		public String addlignecommande(Model model, 
 				@RequestParam(name="produit",defaultValue="0")String ref,
 				@RequestParam(name="commande",defaultValue="0")Long numero,
@@ -390,7 +393,7 @@ public class CommandeController {
 				lc.setQte(qte);
 				  
 				lc.setTotal( lc.getQte() * lc.getProduit().getPrix() );
-				lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
+				//lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
 				  
 				lc = metierLigneCommande.saveLigneCommande(lc); 
 			}
@@ -419,7 +422,7 @@ public class CommandeController {
 			}
 			  
 			lc.setTotal( lc.getQte() * lc.getProduit().getPrix() );
-			lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
+			//lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
 			
 			metierLigneCommande.saveLigneCommande(lc); 
 			model.addAttribute("updateLcOk","Ligne "+lc.getId()+" est mise à jour");  
@@ -436,7 +439,7 @@ public class CommandeController {
 			return editCommande(model,numCommande);
 		}
 		
-		@RequestMapping(value="/commandes/ligne/store", method=RequestMethod.POST,produces = "application/json")
+		@RequestMapping(value="/commandes/ligne/store", method=RequestMethod.POST)
 		public @ResponseBody Result storelignecommande(  
 				@RequestParam(name="refProduit",defaultValue="0")String refProduit, 
 				@RequestParam(name="qte",defaultValue="0")Integer qte
@@ -455,7 +458,7 @@ public class CommandeController {
 			lcs.put(refProduit, lc);
 
 			lc.setTotal( lc.getQte() * lc.getProduit().getPrix() );
-			lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
+			//lc.setTtc( lc.getTotal() + (lc.getTotal()*lc.getProduit().getTva().getTaux())/100.0);
 			
 			session.setAttribute("lcs", lcs);
 			

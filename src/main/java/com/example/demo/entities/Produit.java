@@ -27,10 +27,10 @@ public class Produit
 	
 	private String famille;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name="CODE_TVA", nullable=true)  
 	@NotFound(action = NotFoundAction.IGNORE) 
-	private Tva tva;
+	private Tva tva;*/
 
 	public String getRef() {
 		return ref;
@@ -80,13 +80,7 @@ public class Produit
 		this.famille = famille;
 	}
 
-	public Tva getTva() {
-		return tva;
-	}
 
-	public void setTva(Tva tva) {
-		this.tva = tva;
-	}
 
 	public Produit(String ref, String designation, @DecimalMin("0") double prix, @Min(0) int quantite,
 			@Min(0) int quantiteAlert, String famille, Tva tva) {
@@ -97,7 +91,7 @@ public class Produit
 		this.quantite = quantite;
 		this.quantiteAlert = quantiteAlert;
 		this.famille = famille;
-		this.tva = tva;
+		
 	}
 
 	public Produit() {

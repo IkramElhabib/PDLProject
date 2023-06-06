@@ -97,9 +97,24 @@ public class LigneCommande
 		this.produit = produit;
 		this.qte = qte;
 	}
+	public LigneCommande(Long id,Commande commande, Produit produit, int qte,double total) {
+		super();
+		this.commande = commande;
+		this.produit = produit;
+		this.qte = qte;
+		this.total = total;
+	}
+
 
 	public LigneCommande() {
 		super();
+	}
+
+	public LigneCommande(Long id, Commande commande, Produit produit) {
+		super();
+		this.id = id;
+		this.commande = commande;
+		this.produit = produit;
 	}
 	
 	

@@ -21,7 +21,7 @@ public class DossierMetierImpl implements IDossierMetier
 
 	@Override
 	public Dossier getDossier(Long num) { 
-		return dosRep.getOne(num);
+		  return dosRep.findByNumero(num);
 	}
 
 	@Override
