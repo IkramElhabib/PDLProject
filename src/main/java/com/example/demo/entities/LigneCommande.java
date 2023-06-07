@@ -99,6 +99,7 @@ public class LigneCommande
 	}
 	public LigneCommande(Long id,Commande commande, Produit produit, int qte,double total) {
 		super();
+		this.id = id;
 		this.commande = commande;
 		this.produit = produit;
 		this.qte = qte;

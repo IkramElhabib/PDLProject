@@ -113,7 +113,7 @@ public class CommandesController {
         if (produit != null) {
             // Mettre à jour le produit de la ligne de commande avec l'instance persistée
             ligneCommande.setProduit(produit);
-            
+            ligneCommande.setCommande(commande);
             // Enregistrer la ligne de commande
             lcRepository.save(ligneCommande);
         } else {

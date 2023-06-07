@@ -21,7 +21,8 @@
     </form>
 
     <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
-        <input type="hidden" id="numeroCommande" name="commande.numero">
+        <input type="number" id="numeroCommande" th:field="*{commande.numero}" readonly>
+        
 
         <label for="produit">Produit:</label>
         <select id="produit" th:field="*{produit.ref}" name="produit.ref" required>
