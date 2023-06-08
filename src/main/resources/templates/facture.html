@@ -24,6 +24,12 @@
     <label for="client">Client:</label>
     <input type="hidden" th:field="*{client}" th:value="${facture.commande.client}" readonly />
     
+	    <label for="dossier">Dossier:</label>
+	<select id="dossier" th:field="*{dossier}">
+	    <option value="">Sélectionner un dossier</option>
+	    <option th:each="dossier : ${dossiers}" th:value="${dossier.numero}" th:text="${dossier.nom}"></option>
+	</select>
+    
     <button type="submit">Sauvegarder</button>
 </form>
 

@@ -77,4 +77,7 @@ public interface DossierRepository extends JpaRepository<Dossier, Long>
     @Modifying
     @Query("UPDATE Dossier d SET d.dateFermeture = :dateFermeture WHERE d.numero = :numero")
     void fermerDossier(@Param("numero") Long numero, @Param("dateFermeture") LocalDate dateFermeture);
+    
+    @Query("SELECT d FROM Dossier d WHERE d.dateFermeture IS NULL")
+    List<Dossier> findByDateFermetureIsNull();
 }
