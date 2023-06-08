@@ -160,6 +160,13 @@ public class CommandesController {
         model.addAttribute("commande", commande);
         return "details-commande";
     }
+    
+    @GetMapping("/commandeslist")
+    public String afficherCommandes(Model model) {
+        List<Commande> commandes = commandeRepository.findAll();
+        model.addAttribute("commandes", commandes);
+        return "listcommandes";
+    }
 
 
 }

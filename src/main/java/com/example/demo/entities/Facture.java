@@ -174,6 +174,19 @@ public class Facture
 		this.lignesFacture = lignesFacture;
 		this.dossier = dossier;
 	}
+	
+	
+
+
+	public Facture(Long numero, Date dateFacture, double total, double ttc, Client client, Commande commande) {
+		super();
+		this.numero = numero;
+		this.dateFacture = dateFacture;
+		this.total = total;
+		this.ttc = ttc;
+		this.client = client;
+		this.commande = commande;
+	}
 
 
 

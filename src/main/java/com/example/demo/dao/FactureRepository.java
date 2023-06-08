@@ -61,4 +61,6 @@ import com.example.demo.entities.Facture;
 
 		@Query("select coalesce(sum(p.ttc),0) from Facture p where p.fournisseur=null and p.dossier.numero=:num")
 		public Double prixVentesProduits(@Param("num")Long numeroDossier);
+		
+		Facture findByNumero(Long numero);
 }
