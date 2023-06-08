@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,4 +64,6 @@ import com.example.demo.entities.Facture;
 		public Double prixVentesProduits(@Param("num")Long numeroDossier);
 		
 		Facture findByNumero(Long numero);
-}
+		List<Facture> findAll();
+		Facture save(Facture facture);
+		}
