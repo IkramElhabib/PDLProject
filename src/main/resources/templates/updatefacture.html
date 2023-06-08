@@ -1,0 +1,32 @@
+<form th:action="@{/modifier-facture}" method="post" th:object="${facture}">
+    <input type="hidden" th:field="*{numero}" />
+    
+    <label for="dateFacture">Date de facture:</label>
+    <input type="date" id="dateFacture" th:field="*{dateFacture}" required />
+    
+    <label for="total">Total:</label>
+    <input type="number" id="total" th:field="*{total}" step="0.01" required />
+    
+    <label for="ttc">TTC:</label>
+    <input type="number" id="ttc" th:field="*{ttc}" step="0.01" required />
+    
+    <label for="client">Client:</label>
+    <input type="text" id="client" th:field="*{client.nom}" readonly />
+    
+    <!-- Champ supplémentaire pour récupérer l'ID du client -->
+    <input type="hidden" th:field="*{client.code}" />
+    
+    <!-- Champ supplémentaire pour récupérer l'ID de la commande -->
+    <input type="hidden" th:field="*{commande.numero}" />
+    
+    <label for="commande">Commande:</label>
+    <input type="text" id="commande" th:field="*{commande.numero}" readonly />
+    
+    <label for="dossier">Dossier:</label>
+    <select id="dossier" th:field="*{dossier}">
+        <option value="">-- Select a dossier --</option>
+        <option th:each="dossier : ${dossiers}" th:value="${dossier.numero}" th:text="${dossier.nom}"></option>
+    </select>
+    
+    <button type="submit">Modifier</button>
+</form>

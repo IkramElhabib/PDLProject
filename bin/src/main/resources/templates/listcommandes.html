@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des commandes</title>
+</head>
+<body>
+    <h1>Liste des commandes</h1>
+    <table>
+        <tr>
+            <th>Numéro</th>
+            <th>valide</th>
+            <th>Produit</th>
+            <th>Quantité</th>
+        </tr>
+        <tr th:each="commande : ${commandes}">
+            <td th:text="${commande.numero}"></td>
+            <td th:text="${commande.valide}"></td>
+            <td>
+                <table>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                    </tr>
+                    <tr th:each="ligne : ${commande.lignesCommande}">
+                        <td th:text="${ligne.produit.designation}"></td>
+                        <td th:text="${ligne.qte}"></td>
+                    </tr>
+                </table>
+            </td>
+           <td>
+    <a th:if="${not commande.valide}" th:href="@{/ajouter-facture/{numeroCommande}(numeroCommande=${commande.numero})}">
+			        <button type="button">Facture</button>
+			    </a>
+			</td>
+
+        </tr>
+    </table>
+</body>
+</html>

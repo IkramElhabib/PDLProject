@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des factures</title>
+</head>
+<body>
+    <h1>Liste des factures</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Date de facture</th>
+                <th>Total</th>
+                <th>TTC</th>
+                <th>Client</th>
+                <th>Commande</th>
+                <th>Dossier</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="facture : ${factures}">
+                <td th:text="${facture.numero}"></td>
+                <td th:text="${facture.dateFacture}"></td>
+                <td th:text="${facture.total}"></td>
+                <td th:text="${facture.ttc}"></td>
+    			<td th:text="${facture.client != null ? facture.client.nom : ''}"></td>
+                <td th:text="${facture.commande != null ? facture.commande.numero: ''}"></td>
+    			<td th:text="${facture.dossier != null ? facture.dossier.nom : ''}"></td>
+    			<td><a th:href="@{/modifier-facture/{numero}(numero=${facture.numero})}">Corriger</a></td>
+    			
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

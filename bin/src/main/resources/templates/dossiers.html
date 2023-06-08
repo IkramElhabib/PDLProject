@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des dossiers</title>
+</head>
+<body>
+    <h1>Liste des dossiers</h1>
+
+   <!-- Formulaire pour créer un nouveau dossier -->
+
+	<form th:action="@{/dossiers}" method="post" >
+	    <input type="text" name="nom" required />
+	    <button type="submit">Créer dossier</button>
+	</form>
+
+
+<!-- Liste des dossiers existants -->
+<ul>
+    <li th:each="dossier : ${dossiers}">
+        <span th:text="${dossier.nom}" /> - <span th:text="${#temporals.format(dossier.dateCreation, 'yyyy-MM-dd HH:mm:ss')}" /> -
+        <span th:if="${dossier.dateFermeture} != null" th:text="${dossier.dateFermeture}" />
+        <form th:if="${dossier.dateFermeture == null}" th:action="@{/dossiers/{numero}/fermer(numero=${dossier.numero})}" method="post">
+            <button type="submit">Fermer</button>
+        </form>
+    </li>
+</ul>
+
+
+</body>
+</html>
