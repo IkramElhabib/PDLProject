@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calcul du produit</title>
+</head>
+<body>
+  <form>
+    <label for="prix">Prix :</label>
+    <input type="number" id="prix" name="prix" min="0">
+    <br>
+    <label for="quantite">Quantité :</label>
+    <input type="number" id="quantite" name="quantite" min="0">
+    <br>
+    <button type="button" onclick="calculerProduit()">Calculer</button>
+  </form>
+
+  <p id="resultat"></p>
+
+  <script>
+    function calculerProduit() {
+      // Récupérer les valeurs des inputs
+      var prix = parseFloat(document.getElementById("prix").value);
+      var quantite = parseInt(document.getElementById("quantite").value);
+
+      // Vérifier si les valeurs sont valides
+      if (isNaN(prix) || isNaN(quantite)) {
+        document.getElementById("resultat").textContent = "Veuillez entrer des valeurs numériques valides.";
+      } else {
+        // Calculer le produit
+        var produit = prix * quantite;
+        document.getElementById("resultat").textContent = "Le produit est : " + produit;
+      }
+    }
+  </script>
+</body>
+</html>

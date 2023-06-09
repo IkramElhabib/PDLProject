@@ -7,124 +7,57 @@
 <body>
     <h1>Formulaire de vente</h1>
 
-    <form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
-        <label for="dateCommande">Date de commande:</label>
-        <input type="date" id="dateCommande" th:field="${commande.dateCommande}" name="dateCommande" required><br><br>
-
-        <label for="client">Client:</label>
-        <select id="client" th:field="*{client.code}" name="client.code" required>
-            <option value="">Sélectionner un client</option>
-            <!-- Utilisation de th:each pour afficher les clients -->
-            <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
-        </select><br><br>
-        <input type="submit" value="Enregistrer">
-    </form>
+		<form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
+	    <label for="dateCommande">Date de commande:</label>
+	    <input type="date" id="dateCommande" th:field="*{dateCommande}" name="dateCommande" required><br><br>
+	
+	    <label for="client">Client:</label>
+	    <select id="client" th:field="*{client.code}" name="client.code" required>
+	        <option value="">Sélectionner un client</option>
+	        <!-- Utilisation de th:each pour afficher les clients -->
+	        <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
+	    </select><br><br>
+	    <input type="submit" value="Enregistrer">
+	</form>
 
     <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
-        <input type="number" id="numeroCommande" th:field="*{commande.numero}" readonly>
-        
-
-        <label for="produit">Produit:</label>
-        <select id="produit" th:field="*{produit.ref}" name="produit.ref" required>
-            <option value="">Sélectionner un produit</option>
-            <!-- Utilisation de th:each pour afficher les produits -->
-            <option th:each="produit : ${produits}" th:value="${produit.ref}" th:text="${produit.designation}"></option>
-        </select><br><br>
-
-        <label for="qte">Quantité:</label>
-        <input type="number" id="qte" th:field="*{qte}" name="qte" required><br><br>
-
-        <input type="submit" value="Ajouter">
-    </form>
-
-    <script th:inline="javascript">
-    /* <![CDATA[ */
-    var formCommande = document.getElementById("formCommande");
-    var formLigneCommande = document.getElementById("formLigneCommande");
-    var numeroCommandeField = document.getElementById("numeroCommande");
-
-    formCommande.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        // Récupérer les données du formulaire de commande
-        var formDataCommande = new FormData(formCommande);
-
-        // Envoyer la requête AJAX pour enregistrer la commande
-        fetch(formCommande.getAttribute("action"), {
-            method: formCommande.method,
-            body: formDataCommande
-        })
-        .then(function(response) {
-            if (response.ok) {
-                // Extraire le numéro de commande de la réponse
-                response.json().then(function(data) {
-                    var numeroCommande = data.numero;
-
-                    // Injecter le numéro de commande dans le formulaire de ligne de commande
-                    numeroCommandeField.value = numeroCommande;
-
-                    // Soumettre le formulaire de ligne de commande
-                    formLigneCommande.submit();
-                });
-            } else {
-                // Afficher les erreurs de validation
-                response.json().then(function(errors) {
-                    // Afficher les messages d'erreur à côté des champs
-                    Object.keys(errors).forEach(function(fieldName) {
-                        var field = formCommande.querySelector("[name='" + fieldName + "']");
-                        var errorMessages = errors[fieldName];
-
-                        // Ajouter les messages d'erreur à côté du champ
-                        errorMessages.forEach(function(errorMessage) {
-                            var errorElement = document.createElement("div");
-                            errorElement.className = "error-message";
-                            errorElement.textContent = errorMessage;
-                            field.parentNode.appendChild(errorElement);
-                        });
-                    });
-                });
-            }
-        });
-    });
-
-    formLigneCommande.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        // Récupérer les données du formulaire de ligne de commande
-        var formDataLigneCommande = new FormData(formLigneCommande);
-
-        // Envoyer la requête AJAX pour ajouter la ligne de commande
-        fetch(formLigneCommande.getAttribute("action"), {
-            method: formLigneCommande.method,
-            body: formDataLigneCommande
-        })
-        .then(function(response) {
-            if (response.ok) {
-                // Recharger la page
-                window.location.reload();
-            } else {
-                // Afficher les erreurs de validation
-                response.json().then(function(errors) {
-                    // Afficher les messages d'erreur à côté des champs
-                    Object.keys(errors).forEach(function(fieldName) {
-                        var field = formLigneCommande.querySelector("[name='" + fieldName + "']");
-                        var errorMessages = errors[fieldName];
-
-                        // Ajouter les messages d'erreur à côté du champ
-                        errorMessages.forEach(function(errorMessage) {
-                            var errorElement = document.createElement("div");
-                            errorElement.className = "error-message";
-                            errorElement.textContent = errorMessage;
-                            field.parentNode.appendChild(errorElement);
-                        });
-                    });
-                });
-            }
-        });
-    });
-    /* ]]> */
+    <input type="hidden" id="numeroCommande" name="numero" th:value="${commande.numero}">
+           
+    <label for="produit">Produit:</label>
+    <select id="produit" th:field="*{produit.ref}" name="produit.ref" required>
+        <option value="">Sélectionner un produit</option>
+        <!-- Utilisation de th:each pour afficher les produits -->
+        <option th:each="produit : ${produits}" th:value="${produit.ref}" th:text="${produit.designation}" th:attr="data-prix=${produit.prix}"></option>
+    </select><br><br>
+    <input type="text" id="prixProduit" readonly>
+    <script>
+document.getElementById("produit").addEventListener("change", function() {
+    var selectedProduct = this.options[this.selectedIndex];
+    var prixProduit = document.getElementById("prixProduit");
+    prixProduit.value = selectedProduct.getAttribute("data-prix");
+});
 </script>
 
+    <label for="qte">Quantité:</label>
+    <input type="number" id="qte" th:field="*{qte}" name="qte" required><br><br>
+    <button type="button" id="btnMultiplication">Multiplier</button>
+    <script>
+document.getElementById("btnMultiplication").addEventListener("click", function() {
+    var prixProduit = parseFloat(document.getElementById("produit").options[document.getElementById("produit").selectedIndex].getAttribute("data-prix"));
+    var quantite = parseInt(document.getElementById("qte").value);
+    var resultat = prixProduit * quantite;
+    document.getElementById("resultat").value = resultat.toFixed(2); // Formater le résultat avec deux décimales
+});
+</script>
+    
+
+<label for="resultat">Résultat:</label>
+<input type="text" id="resultat" th:field="*{total}" readonly>
+
+    <input type="submit" value="Ajouter">
+</form>
+
+    
 
 </body>
 </html>
