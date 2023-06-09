@@ -21,11 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dao.ClientRepository;
 import com.example.demo.dao.CommandeRepository;
+import com.example.demo.dao.DossierRepository;
 import com.example.demo.dao.FournisseurRepository;
 import com.example.demo.dao.LcRepository;
 import com.example.demo.dao.ProduitRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Commande;
+import com.example.demo.entities.Dossier;
 import com.example.demo.entities.Fournisseur;
 import com.example.demo.entities.LigneCommande;
 import com.example.demo.entities.Produit;
@@ -41,14 +43,16 @@ public class CommandesController {
 	public ClientRepository clientRepository;
 	public ProduitRepository produitRepository;
 	public LcRepository lcRepository;
+	public DossierRepository dossierRepository;
 
     
-    public CommandesController(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, ClientRepository clientRepository, ProduitRepository produitRepository, LcRepository lcRepository) {
+    public CommandesController(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, ClientRepository clientRepository, ProduitRepository produitRepository, LcRepository lcRepository, DossierRepository dossierRepository) {
         this.commandeRepository = commandeRepository;
         this.fournisseurRepository = fournisseurRepository;
         this.clientRepository = clientRepository;
         this.produitRepository = produitRepository;
         this.lcRepository = lcRepository;
+        this.dossierRepository = dossierRepository;
     }
     
     @PostMapping("/vente")
@@ -92,6 +96,13 @@ public class CommandesController {
             commande.setFournisseur(fournisseur);
             commande.setClient(null);
         }
+        // Récupérer le dossier sélectionné par son ID
+        Long dossierId = commande.getDossier().getNumero();
+        Dossier dossier = dossierRepository.findById(dossierId).orElse(null);
+
+        // Associer le dossier à la facture
+        commande.setDossier(dossier);
+        
 
         commande.setValide(false);
         commandeRepository.save(commande);
@@ -107,8 +118,12 @@ public class CommandesController {
         List<Client> clients = clientRepository.findAll();
         List<Produit> produits = produitRepository.findAll();
         List<Fournisseur> fournisseurs= fournisseurRepository.findAll();
+        List<Dossier> dossiers = dossierRepository.findByDateFermetureIsNull();
+
         model.addAttribute("fournisseurs", fournisseurs);
         model.addAttribute("clients", clients);
+        model.addAttribute("dossiers", dossiers);
+
 
         if (numero != null) {
             Commande commande = commandeRepository.findByNumero(numero);
@@ -176,6 +191,21 @@ public class CommandesController {
         model.addAttribute("commandes", commandes);
         return "listcommandes";
     }
+    
+    @GetMapping("/ventelist")
+    public String afficherVentes(Model model) {
+        List<Commande> commandes = commandeRepository.findByClientIsNotNullAndFournisseurIsNull();
+        model.addAttribute("commandes", commandes);
+        return "listcommandes";
+    }
+
+    @GetMapping("/achatlist")
+    public String afficherAchats(Model model) {
+        List<Commande> commandes = commandeRepository.findByClientIsNullAndFournisseurIsNotNull();
+        model.addAttribute("commandes", commandes);
+        return "listcommandes";
+    }
+
 
 
 

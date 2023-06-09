@@ -6,6 +6,10 @@
 </head>
 <body>
     <h1>Liste des commandes</h1>
+    <div class="mb-3">
+    <button id="venteBtn" type="button" class="btn btn-primary">Vente</button>
+    <button id="achatBtn" type="button" class="btn btn-primary">Achat</button>
+</div>
     <table>
         <tr>
             <th>Numéro</th>
@@ -36,5 +40,17 @@
 
         </tr>
     </table>
+    <script>
+    var venteBtn = document.getElementById('venteBtn');
+    var achatBtn = document.getElementById('achatBtn');
+
+    venteBtn.addEventListener('click', function() {
+        window.location.href = '/ventelist';
+    });
+
+    achatBtn.addEventListener('click', function() {
+        window.location.href = '/achatlist';
+    });
+</script>
 </body>
 </html>

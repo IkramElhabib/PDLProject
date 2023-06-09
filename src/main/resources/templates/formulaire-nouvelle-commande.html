@@ -35,6 +35,12 @@
 
             <button id="clientBtn" type="button" class="btn btn-primary">Vente - Client</button>
             <button id="fournisseurBtn" type="button" class="btn btn-primary">Achat - Fournisseur</button>
+            
+            <label for="dossier">Dossier:</label>
+	<select id="dossier" th:field="*{dossier}">
+	    <option value="">Sélectionner un dossier</option>
+	    <option th:each="dossier : ${dossiers}" th:value="${dossier.numero}" th:text="${dossier.nom}"></option>
+	</select>
 
             <input type="submit" value="Enregistrer" class="btn btn-success">
         </form>

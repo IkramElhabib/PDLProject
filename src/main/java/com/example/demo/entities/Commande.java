@@ -171,6 +171,28 @@ public class Commande {
 		this.lignesCommande = lignesCommande;
 		this.total = total;
 	}
+	public Commande(long numero, Date dateCommande, boolean valide, Fournisseur fournisseur,
+			Collection<LigneCommande> lignesCommande, double total, Dossier dossier) {
+		super();
+		this.numero = numero;
+		this.dateCommande = dateCommande;
+		this.valide = valide;
+		this.fournisseur = fournisseur;
+		this.lignesCommande = lignesCommande;
+		this.total = total;
+		this.dossier =dossier;
+	}
+	public Commande(long numero, Date dateCommande, boolean valide, Client client,
+			Collection<LigneCommande> lignesCommande, double total, Dossier dossier) {
+		super();
+		this.numero = numero;
+		this.dateCommande = dateCommande;
+		this.valide = valide;
+		this.client = client;
+		this.lignesCommande = lignesCommande;
+		this.total = total;
+		this.dossier =dossier;
+	}
 	
 
 
