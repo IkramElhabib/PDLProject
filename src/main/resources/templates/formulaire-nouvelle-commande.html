@@ -8,17 +8,53 @@
     <h1>Formulaire de vente</h1>
 
 		<form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
-	    <label for="dateCommande">Date de commande:</label>
-	    <input type="date" id="dateCommande" th:field="*{dateCommande}" name="dateCommande" required><br><br>
-	
-	    <label for="client">Client:</label>
-	    <select id="client" th:field="*{client.code}" name="client.code" required>
-	        <option value="">Sélectionner un client</option>
-	        <!-- Utilisation de th:each pour afficher les clients -->
-	        <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
-	    </select><br><br>
-	    <input type="submit" value="Enregistrer">
-	</form>
+    <label for="dateCommande">Date de commande:</label>
+    <input type="date" id="dateCommande" th:field="*{dateCommande}" name="dateCommande" required><br><br>
+
+<label for="client">Client:</label>
+    <select id="client" th:field="*{client.code}" name="client.code" required>
+        <option value="">Sélectionner un client</option>
+        <!-- Utilisation de th:each pour afficher les clients -->
+        <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
+    </select><br><br>
+
+    
+    <select id="fournisseur" th:field="*{fournisseur.code}" name="fournisseur.code" required>
+        <option value="">Sélectionner un fournisseur</option>
+        <option th:each="fournisseur : ${fournisseurs}" th:value="${fournisseur.code}" th:text="${fournisseur.nom}"></option>
+    </select><br><br>
+    <input type="submit" value="Enregistrer">
+</form>
+
+<button id="clientBtn">Vente - Client</button>
+<button id="fournisseurBtn">Achat - Fournisseur</button>
+
+<script>
+    var clientSelect = document.getElementById('client');
+    var fournisseurSelect = document.getElementById('fournisseur');
+    var clientBtn = document.getElementById('clientBtn');
+    var fournisseurBtn = document.getElementById('fournisseurBtn');
+
+    // Function to enable client selection and disable fournisseur selection
+    function enableClientSelection() {
+        clientSelect.disabled = false;
+        fournisseurSelect.disabled = true;
+    }
+
+    // Function to enable fournisseur selection and disable client selection
+    function enableFournisseurSelection() {
+        clientSelect.disabled = true;
+        fournisseurSelect.disabled = false;
+    }
+
+    // Event listener for client button click
+    clientBtn.addEventListener('click', enableClientSelection);
+
+    // Event listener for fournisseur button click
+    fournisseurBtn.addEventListener('click', enableFournisseurSelection);
+</script>
+    <input type="submit" value="Enregistrer">
+</form>
 
     <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
     <input type="hidden" id="numeroCommande" name="numero" th:value="${commande.numero}">

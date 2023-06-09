@@ -26,6 +26,7 @@ import com.example.demo.dao.LcRepository;
 import com.example.demo.dao.ProduitRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Commande;
+import com.example.demo.entities.Fournisseur;
 import com.example.demo.entities.LigneCommande;
 import com.example.demo.entities.Produit;
 
@@ -52,33 +53,50 @@ public class CommandesController {
     
     @PostMapping("/vente")
     public String saveCommandeVente(@ModelAttribute @Valid Commande commande, BindingResult bindingResult, Model model) {
-        // Vérifications de validation de commande
+        // Validation checks for the commande object
 
         if (bindingResult.hasErrors()) {
-            // Si des erreurs de validation sont présentes, retourner les erreurs
+            // Handle validation errors
             Map<String, Object> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> {
                 String fieldName = error.getField();
                 String errorMessage = error.getDefaultMessage();
                 errors.put(fieldName, errorMessage);
             });
-            // Ajoutez les erreurs au modèle si nécessaire
             model.addAttribute("errors", errors);
-            // Retourne le nom de la vue pour afficher les erreurs
             return "formulaire-nouvelle-commande";
         }
 
-        // Récupérer le client associé à la commande de vente
-        Client client = clientRepository.findByCode(commande.getClient().getCode());
-        // Ajouter le client à la commande
-        commande.setClient(client);
+        if (commande.getClient() != null && commande.getFournisseur() != null) {
+            // Handle the case where both a client and a fournisseur are selected
+            model.addAttribute("error", "Veuillez sélectionner soit un client soit un fournisseur, mais pas les deux.");
+            return "formulaire-nouvelle-commande";
+        }
 
-        // Définir la valeur par défaut pour "valide" (false)
+        if (commande.getClient() != null) {
+            Client client = clientRepository.findByCode(commande.getClient().getCode());
+            if (client == null) {
+                model.addAttribute("error", "Client introuvable");
+                return "formulaire-nouvelle-commande";
+            }
+            commande.setClient(client);
+            commande.setFournisseur(null);
+        }
+
+        if (commande.getFournisseur() != null) {
+            Fournisseur fournisseur = fournisseurRepository.findByCode(commande.getFournisseur().getCode());
+            if (fournisseur == null) {
+                model.addAttribute("error", "Fournisseur introuvable");
+                return "formulaire-nouvelle-commande";
+            }
+            commande.setFournisseur(fournisseur);
+            commande.setClient(null);
+        }
+
         commande.setValide(false);
-
         commandeRepository.save(commande);
 
-        // Redirection vers le formulaire d'ajout de ligne de commande
+        // Redirect to the formulaire for adding ligne de commande
         return "redirect:/ligne/form?numero=" + commande.getNumero();
     }
 
@@ -88,6 +106,8 @@ public class CommandesController {
     public String afficherFormulaireVente(Model model, @RequestParam(value = "numero", required = false) Integer numero) {
         List<Client> clients = clientRepository.findAll();
         List<Produit> produits = produitRepository.findAll();
+        List<Fournisseur> fournisseurs= fournisseurRepository.findAll();
+        model.addAttribute("fournisseurs", fournisseurs);
         model.addAttribute("clients", clients);
 
         if (numero != null) {

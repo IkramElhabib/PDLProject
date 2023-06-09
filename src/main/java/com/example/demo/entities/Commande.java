@@ -161,5 +161,17 @@ public class Commande {
 		this.lignesCommande = lignesCommande;
 	}
 
+	public Commande(long numero, Date dateCommande, boolean valide, Fournisseur fournisseur,
+			Collection<LigneCommande> lignesCommande, double total) {
+		super();
+		this.numero = numero;
+		this.dateCommande = dateCommande;
+		this.valide = valide;
+		this.fournisseur = fournisseur;
+		this.lignesCommande = lignesCommande;
+		this.total = total;
+	}
+	
+
 
 }
