@@ -7,16 +7,16 @@
     <h1>Edit Role</h1>
     
     <form th:action="@{/roles/update}" th:object="${role}" method="post">
-        <input type="hidden" th:field="*{id}">
+		<input type="number" th:field="${role.id}">
         
         <div>
-            <label for="role">Role:</label>
-            <input type="text" id="role" th:field="*{role}" required>
+            <label >Role:</label>
+            <input type="text" th:field="${role.role}" required>
         </div>
         
         <div>
             <label for="designation">Designation:</label>
-            <input type="text" id="designation" th:field="*{designation}" required>
+            <input type="text" id="designation" th:field="${role.designation}" required>
         </div>
         
         <div>

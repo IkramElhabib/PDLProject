@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 public class Role
 {
 	@Id @NotNull 
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
 	
@@ -27,9 +27,6 @@ public class Role
 		} 
 	public void setRole(String role) { 
 		this.role = role; 
-		}
-	@Override public String toString() {
-		return role;
 		}
 	
 	

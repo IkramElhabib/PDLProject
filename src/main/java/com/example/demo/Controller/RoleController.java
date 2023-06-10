@@ -34,7 +34,7 @@ public class RoleController {
     public String showAddRoleForm(Model model) {
         Role roless = new Role();
         model.addAttribute("roless", roless);
-        long randomId = generateRandomId();
+       long randomId = generateRandomId();
         roless.setId(randomId);
         
         return "ajoutroles";
