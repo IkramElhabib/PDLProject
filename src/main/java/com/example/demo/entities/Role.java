@@ -4,29 +4,30 @@ import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Role implements Serializable
+public class Role
 {
-	@Id @NotNull @GeneratedValue Long id;
-	
-	//@Size(min=3,max=100)  
+	@Id @NotNull 
+	@GeneratedValue(strategy = GenerationType.AUTO) 
+	private Long id;
 	 private String role;
 	
 	//@Size(min=3,max=100) 
 	 private String designation;
 
-	public Role() {} 
-
-	public Role(String r) {role=r;}
-	public Role(Long id,String r) {role=r;this.id=id;}
-
-	public String getRole() { return role; } 
-	public void setRole(String role) { this.role = role; }
-	@Override public String toString() {return role;}
-
+	public String getRole() { 
+		return role; 
+		} 
+	public void setRole(String role) { 
+		this.role = role; 
+		}
+	@Override public String toString() {
+		return role;
+		}
 	
 	
 	public String getDesignation() {
@@ -44,6 +45,29 @@ public class Role implements Serializable
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public Role() {} 
+
+	public Role(String r) {
+		this.role=r;
+		}
+	public Role(Long id,String r) {
+		this.role=r;
+		this.id=id;
+		}
+	public Role(Long id,String r,String designation) {
+		this.role=r;
+		this.id=id;
+		this.designation=designation;
+		}
+	public Role(String r,String designation) {
+		this.role=r;
+		this.designation=designation;
+		}
+	public Role(String designation,Long id) {
+		this.id=id ;
+		this.designation=designation;
+		}
+
 	
 }
 
