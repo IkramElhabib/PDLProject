@@ -3,128 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulaire de vente</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+  <style>
+   body {
+  background-color: #fbfbfb;
+}
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0; /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
+  z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+	background: #fff;
+	padding: 20px 25px;
+	border-radius: 3px;
+	min-width: 1000px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {        
+	padding-bottom: 15px;
+	background: #435d7d;
+	color: #fff;
+	padding: 16px 30px;
+	min-width: 100%;
+	margin: -20px -25px 10px;
+	border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+	margin: 5px 0 0;
+	font-size: 24px;
+}
+.table-title .btn-group {
+	float: right;
+}
+.table-title .btn {
+	color: #fff;
+	float: right;
+	font-size: 13px;
+	border: none;
+	min-width: 50px;
+	border-radius: 2px;
+	border: none;
+	outline: none !important;
+	margin-left: 10px;
+}
+.table-title .btn i {
+	float: left;
+	font-size: 21px;
+	margin-right: 5px;
+}
+.table-title .btn span {
+	float: left;
+	margin-top: 2px;
+}
+table.table tr th, table.table tr td {
+	border-color: #e9e9e9;
+	padding: 12px 15px;
+	vertical-align: middle;
+}
+table.table tr th:first-child {
+	width: 60px;
+}
+table.table tr th:last-child {
+	width: 100px;
+}
+table.table-striped tbody tr:nth-of-type(odd) {
+	background-color: #fcfcfc;
+}
+table.table-striped.table-hover tbody tr:hover {
+	background: #f5f5f5;
+}
+table.table th i {
+	font-size: 13px;
+	margin: 0 5px;
+	cursor: pointer;
+}	
+table.table td:last-child i {
+	opacity: 0.9;
+	font-size: 22px;
+	margin: 0 5px;
+}
+table.table td a {
+	font-weight: bold;
+	color: #566787;
+	display: inline-block;
+	text-decoration: none;
+	outline: none !important;
+}
+table.table td a:hover {
+	color: #2196F3;
+}
+table.table td a.edit {
+	color: #FFC107;
+}
+table.table td a.delete {
+	color: #F44336;
+}
+table.table td i {
+	font-size: 19px;
+}
+table.table .avatar {
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.pagination {
+	float: right;
+	margin: 0 0 5px;
+}
+.pagination li a {
+	border: none;
+	font-size: 13px;
+	min-width: 30px;
+	min-height: 30px;
+	color: #999;
+	margin: 0 2px;
+	line-height: 30px;
+	border-radius: 2px !important;
+	text-align: center;
+	padding: 0 6px;
+}
+.pagination li a:hover {
+	color: #666;
+}	
+.pagination li.active a, .pagination li.active a.page-link {
+	background: #03A9F4;
+}
+.pagination li.active a:hover {        
+	background: #0397d6;
+}
+.pagination li.disabled i {
+	color: #ccc;
+}
+  </style>
 </head>
 <body>
-    <h1>Formulaire de vente</h1>
+  <!--Main Navigation-->
+<header>
+  <!-- Sidebar -->
+  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+    <div class="position-sticky">
+      <div class="list-group list-group-flush mx-3 mt-4">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+          <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
+        </a>
+        <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-lock fa-fw me-3"></i><span>Gestion Des Clients</span></a
+        >
+        <a href="/listFournisseur" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-chart-line fa-fw me-3"></i><span>Gestion Des Fournisseurs</span></a
+        >
+        <a href="/commandeslist" class="list-group-item list-group-item-action py-2 ripple">
+          <i class="fas fa-chart-pie fa-fw me-3"></i><span>Gestion Des Commandes</span>
+        </a>
+        <a href="/dossiers" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Gestion Des Dossiers</span></a
+        >
+        <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-globe fa-fw me-3"></i><span>Gestion Des Produits</span></a
+        >
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple"
+          ><i class="fas fa-building fa-fw me-3"></i><span>Gestion Des Factures</span></a
+        >
+       
+      </div>
+    </div>
+  </nav>
+  <!-- Sidebar -->
 
-    <form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
-        <label for="dateCommande">Date de commande:</label>
-        <input type="date" id="dateCommande" th:field="${commande.dateCommande}" name="dateCommande" required><br><br>
+  <!-- Navbar -->
+  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#sidebarMenu"
+        aria-controls="sidebarMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
 
-        <label for="client">Client:</label>
-        <select id="client" th:field="*{client.code}" name="client.code" required>
-            <option value="">Sélectionner un client</option>
-            <!-- Utilisation de th:each pour afficher les clients -->
-            <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
-        </select><br><br>
-        <input type="submit" value="Enregistrer">
-    </form>
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">
+        <img
+          src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+          height="25"
+          alt="MDB Logo"
+          loading="lazy"
+        />
+      </a>
+      <!-- Search form -->
+      <form class="d-none d-md-flex input-group w-auto my-auto">
+        <input
+          autocomplete="off"
+          type="search"
+          class="form-control rounded"
+          placeholder='Search (ctrl + "/" to focus)'
+          style="min-width: 225px;"
+        />
+        <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
+      </form>
 
-    <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
-        <input type="number" id="numeroCommande" th:field="*{commande.numero}" readonly>
-        
+        <!-- Logout link -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+          </a>
+        </li>
+      </ul>
 
-        <label for="produit">Produit:</label>
-        <select id="produit" th:field="*{produit.ref}" name="produit.ref" required>
-            <option value="">Sélectionner un produit</option>
-            <!-- Utilisation de th:each pour afficher les produits -->
-            <option th:each="produit : ${produits}" th:value="${produit.ref}" th:text="${produit.designation}"></option>
-        </select><br><br>
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+</header>
+<!--Main Navigation-->
 
-        <label for="qte">Quantité:</label>
-        <input type="number" id="qte" th:field="*{qte}" name="qte" required><br><br>
+<main style="margin-top: 58px;">
 
-        <input type="submit" value="Ajouter">
-    </form>
+    <div class="container">
+        <h1>Formulaire de vente</h1>
 
-    <script th:inline="javascript">
-    /* <![CDATA[ */
-    var formCommande = document.getElementById("formCommande");
-    var formLigneCommande = document.getElementById("formLigneCommande");
-    var numeroCommandeField = document.getElementById("numeroCommande");
+        <form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
+            <div class="mb-3">
+                <label for="dateCommande" class="form-label">Date de commande:</label>
+                <input type="date" id="dateCommande" th:field="*{dateCommande}" name="dateCommande" class="form-control" required>
+            </div>
 
-    formCommande.addEventListener("submit", function(event) {
-        event.preventDefault();
+            <div class="mb-3">
+                <label for="client" class="form-label">Client:</label>
+                <select id="client" th:field="*{client.code}" name="client.code" class="form-select" required>
+                    <option value="">Sélectionner un client</option>
+                    <!-- Utilisation de th:each pour afficher les clients -->
+                    <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
+                </select>
+            </div>
 
-        // Récupérer les données du formulaire de commande
-        var formDataCommande = new FormData(formCommande);
+            <div class="mb-3">
+                <label for="fournisseur" class="form-label">Fournisseur:</label>
+                <select id="fournisseur" th:field="*{fournisseur.code}" name="fournisseur.code" class="form-select" required>
+                    <option value="">Sélectionner un fournisseur</option>
+                    <option th:each="fournisseur : ${fournisseurs}" th:value="${fournisseur.code}" th:text="${fournisseur.nom}"></option>
+                </select>
+            </div>
 
-        // Envoyer la requête AJAX pour enregistrer la commande
-        fetch(formCommande.getAttribute("action"), {
-            method: formCommande.method,
-            body: formDataCommande
-        })
-        .then(function(response) {
-            if (response.ok) {
-                // Extraire le numéro de commande de la réponse
-                response.json().then(function(data) {
-                    var numeroCommande = data.numero;
+            <button id="clientBtn" type="button" class="btn btn-primary">Vente - Client</button>
+            <button id="fournisseurBtn" type="button" class="btn btn-primary">Achat - Fournisseur</button>
+            
+            <label for="dossier">Dossier:</label>
+	<select id="dossier" th:field="*{dossier}">
+	    <option value="">Sélectionner un dossier</option>
+	    <option th:each="dossier : ${dossiers}" th:value="${dossier.numero}" th:text="${dossier.nom}"></option>
+	</select>
 
-                    // Injecter le numéro de commande dans le formulaire de ligne de commande
-                    numeroCommandeField.value = numeroCommande;
+            <input type="submit" value="Enregistrer" class="btn btn-success">
+        </form>
 
-                    // Soumettre le formulaire de ligne de commande
-                    formLigneCommande.submit();
-                });
-            } else {
-                // Afficher les erreurs de validation
-                response.json().then(function(errors) {
-                    // Afficher les messages d'erreur à côté des champs
-                    Object.keys(errors).forEach(function(fieldName) {
-                        var field = formCommande.querySelector("[name='" + fieldName + "']");
-                        var errorMessages = errors[fieldName];
+        <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
+            <input type="hidden" id="numeroCommande" name="numero" th:value="${commande.numero}">
 
-                        // Ajouter les messages d'erreur à côté du champ
-                        errorMessages.forEach(function(errorMessage) {
-                            var errorElement = document.createElement("div");
-                            errorElement.className = "error-message";
-                            errorElement.textContent = errorMessage;
-                            field.parentNode.appendChild(errorElement);
-                        });
-                    });
-                });
-            }
+            <div class="mb-3">
+                <label for="produit" class="form-label">Produit:</label>
+                <select id="produit" th:field="*{produit.ref}" name="produit.ref" class="form-select" required>
+                    <option value="">Sélectionner un produit</option>
+                    <!-- Utilisation de th:each pour afficher les produits -->
+                    <option th:each="produit : ${produits}" th:value="${produit.ref}" th:text="${produit.designation}" th:attr="data-prix=${produit.prix}"></option>
+                </select>
+            </div>
+
+            <input type="text" id="prixProduit" readonly class="form-control">
+
+            <div class="mb-3">
+                <label for="qte" class="form-label">Quantité:</label>
+                <input type="number" id="qte" th:field="*{qte}" name="qte" class="form-control" required>
+            </div>
+
+            <button type="button" id="btnMultiplication" class="btn btn-primary">Multiplier</button>
+
+            <div class="mb-3">
+                <label for="resultat" class="form-label">Résultat:</label>
+                <input type="text" id="resultat" th:field="*{total}" readonly class="form-control">
+            </div>
+
+            <input type="submit" value="Ajouter" class="btn btn-success">
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS (place it before the closing </body> tag) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+
+    <script>
+        var clientSelect = document.getElementById('client');
+        var fournisseurSelect = document.getElementById('fournisseur');
+        var clientBtn = document.getElementById('clientBtn');
+        var fournisseurBtn = document.getElementById('fournisseurBtn');
+
+        // Function to enable client selection and disable fournisseur selection
+        function enableClientSelection() {
+            clientSelect.disabled = false;
+            fournisseurSelect.disabled = true;
+        }
+
+        // Function to enable fournisseur selection and disable client selection
+        function enableFournisseurSelection() {
+            clientSelect.disabled = true;
+            fournisseurSelect.disabled = false;
+        }
+
+        // Event listener for client button click
+        clientBtn.addEventListener('click', enableClientSelection);
+
+        // Event listener for fournisseur button click
+        fournisseurBtn.addEventListener('click', enableFournisseurSelection);
+
+        document.getElementById("produit").addEventListener("change", function() {
+            var selectedProduct = this.options[this.selectedIndex];
+            var prixProduit = document.getElementById("prixProduit");
+            prixProduit.value = selectedProduct.getAttribute("data-prix");
         });
-    });
 
-    formLigneCommande.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        // Récupérer les données du formulaire de ligne de commande
-        var formDataLigneCommande = new FormData(formLigneCommande);
-
-        // Envoyer la requête AJAX pour ajouter la ligne de commande
-        fetch(formLigneCommande.getAttribute("action"), {
-            method: formLigneCommande.method,
-            body: formDataLigneCommande
-        })
-        .then(function(response) {
-            if (response.ok) {
-                // Recharger la page
-                window.location.reload();
-            } else {
-                // Afficher les erreurs de validation
-                response.json().then(function(errors) {
-                    // Afficher les messages d'erreur à côté des champs
-                    Object.keys(errors).forEach(function(fieldName) {
-                        var field = formLigneCommande.querySelector("[name='" + fieldName + "']");
-                        var errorMessages = errors[fieldName];
-
-                        // Ajouter les messages d'erreur à côté du champ
-                        errorMessages.forEach(function(errorMessage) {
-                            var errorElement = document.createElement("div");
-                            errorElement.className = "error-message";
-                            errorElement.textContent = errorMessage;
-                            field.parentNode.appendChild(errorElement);
-                        });
-                    });
-                });
-            }
+        document.getElementById("btnMultiplication").addEventListener("click", function() {
+            var prixProduit = parseFloat(document.getElementById("produit").options[document.getElementById("produit").selectedIndex].getAttribute("data-prix"));
+            var quantite = parseInt(document.getElementById("qte").value);
+            var resultat = prixProduit * quantite;
+            document.getElementById("resultat").value = resultat.toFixed(2); // Formater le résultat avec deux décimales
         });
-    });
-    /* ]]> */
-</script>
-
-
+    </script>
 </body>
 </html>
