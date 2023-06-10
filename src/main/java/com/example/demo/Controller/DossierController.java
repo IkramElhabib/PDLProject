@@ -25,8 +25,12 @@ import com.example.demo.IMetier.ICommandeMetier;
 import com.example.demo.IMetier.IDossierMetier;
 import com.example.demo.IMetier.IFactureMetier;
 import com.example.demo.IMetier.IUserMetier;
+import com.example.demo.dao.CommandeRepository;
 import com.example.demo.dao.DossierRepository;
+import com.example.demo.dao.FactureRepository;
+import com.example.demo.entities.Commande;
 import com.example.demo.entities.Dossier;
+import com.example.demo.entities.Facture;
 import com.example.demo.entities.User;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,9 +46,13 @@ public class DossierController {
 	@Autowired private HttpSession session;
 	
 	DossierRepository dossierRepository;
+	CommandeRepository commandeRepository;
+	FactureRepository factureRepository;
 	
-	public DossierController(DossierRepository dossierRepository) {
+	public DossierController(DossierRepository dossierRepository,CommandeRepository commandeRepository,	FactureRepository factureRepository) {
 		this.dossierRepository=dossierRepository;
+		this.commandeRepository=commandeRepository;
+		this.factureRepository = factureRepository;
 	}
 	
 	@RequestMapping(value= {"/dossiers"})
@@ -218,8 +226,6 @@ public class DossierController {
 	    return "redirect:/dossiers";
 	}
 
-
-
     
     @PostMapping("/dossiers/{numero}/fermer")
     public String fermerDossier(@PathVariable("numero") Long numero) {
@@ -259,6 +265,26 @@ public class DossierController {
 
      return "redirect:/fournisseur/add";
  }
+ @GetMapping("/detailss/{numero}")
+ public String showDossierDetails(@PathVariable("numero") Long numero, Model model) {
+     Dossier dossier = dossierRepository.findById(numero).orElse(null);
+     if (dossier == null) {
+         return "redirect:/dossiers";
+     }
+
+     List<Commande> commandes = commandeRepository.findByDossier(dossier);
+     List<Facture> factures = factureRepository.findByDossier(dossier);
+
+     model.addAttribute("dossier", dossier);
+     model.addAttribute("commandes", commandes);
+     model.addAttribute("factures", factures);
+
+     List<Dossier> dossiers = dossierRepository.findAll(); // Retrieve all dossiers
+     model.addAttribute("dossiers", dossiers);
+
+     return "dossierdetails";
+ }
+
  
 	
 }

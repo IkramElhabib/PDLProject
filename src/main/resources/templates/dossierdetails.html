@@ -1,0 +1,44 @@
+<!-- dossierdetails.html -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dossier Details</title>
+</head>
+<body>
+    <h1>Dossier Details</h1>
+    
+    <h2>Dossier Information</h2>
+    <p>Dossier Name: <span th:text="${dossier.nom}"></span></p>
+    <!-- Add other dossier details as needed -->
+    
+    <h2>Commands</h2>
+    <table>
+        <tr>
+            <th>Command Number</th>
+            <th>Date</th>
+            <!-- Add other command headers as needed -->
+        </tr>
+        <tr th:each="commande : ${commandes}">
+            <td th:text="${commande.numero}"></td>
+            <td th:text="${#dates.format(commande.dateCommande, 'dd-MM-yyyy')}"></td>
+            <!-- Add other command details as needed -->
+        </tr>
+    </table>
+    
+    <h2>Invoices</h2>
+    <table>
+        <tr>
+            <th>Invoice Number</th>
+            <th>Date</th>
+            <!-- Add other invoice headers as needed -->
+        </tr>
+        <tr th:each="facture : ${factures}">
+            <td th:text="${facture.numero}"></td>
+            <td th:text="${#dates.format(facture.dateFacture, 'dd-MM-yyyy')}"></td>
+            <!-- Add other invoice details as needed -->
+        </tr>
+    </table>
+</body>
+</html>

@@ -23,6 +23,9 @@
         <form th:if="${dossier.dateFermeture == null}" th:action="@{/dossiers/{numero}/fermer(numero=${dossier.numero})}" method="post">
             <button type="submit">Fermer</button>
         </form>
+	       <a th:href="@{/detailss/{numero}(numero=${dossier.numero})}">
+	    <button type="button">Voir les détails</button>
+	</a>
     </li>
 </ul>
 
