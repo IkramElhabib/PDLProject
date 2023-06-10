@@ -100,7 +100,7 @@ public class FacturesController {
 		     Facture facture = factureRepository.findByNumero(numero);	    
 		     model.addAttribute("facture", facture);
 		     List<Dossier> dossiers = dossierRepository.findAll();
-		        model.addAttribute("dossiers", dossiers);
+		     model.addAttribute("dossiers", dossiers);
 		     return "updatefacture"; 
 		 }
 

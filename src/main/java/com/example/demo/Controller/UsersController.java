@@ -53,26 +53,24 @@ public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bi
     // Set active flag to true
     user.setActive(true);
 
+    // Save the User entity first
+    userRepository.save(user);
+
     // Create UsersRoles entities and associate them with the user
-    List<UsersRoles> usersRoles = new ArrayList<>();
     for (Long roleId : roleIds) {
         Role role = roleRepository.findById(roleId).orElse(null);
         if (role != null) {
             UsersRoles usersRole = new UsersRoles();
             usersRole.setUser(user);
             usersRole.setRole(role);
-            usersRoles.add(usersRole);
-            userRolesRepository.save(usersRole); 
-            
+            userRolesRepository.save(usersRole);
         }
     }
-    user.getRoles().addAll(usersRoles);
-   // user.setRoles(usersRoles);
-
-    userRepository.save(user);
 
     return "redirect:/users";
 }
+
+
 
 
 
