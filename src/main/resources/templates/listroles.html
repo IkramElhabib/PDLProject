@@ -19,6 +19,8 @@
             <td th:text="${role.designation}"></td>
  			<td>
                  <a th:href="@{/roles/edit/{id}(id=${role.id})}">Modifier</a>
+                 <a th:href="@{/roles/delete/{id}(id=${role.id})}">Delete</a>
+                 
             </td>           
             
         </tr>

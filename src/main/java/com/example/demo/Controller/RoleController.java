@@ -77,6 +77,13 @@ public class RoleController {
         
         return "redirect:/roles";
     }
+    
+    @GetMapping("/delete/{id}")
+    public String deleteRole(@PathVariable("id") Long id) {
+        roleRepository.deleteById(id);
+        return "redirect:/roles";
+    }
+    
     private long generateRandomId() {
         Random random = new Random();
         return random.nextLong() & Long.MAX_VALUE;
