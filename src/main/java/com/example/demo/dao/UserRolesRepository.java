@@ -13,4 +13,5 @@ public interface UserRolesRepository extends JpaRepository<UsersRoles, Long>
 {  
 	@Query("select ur from UsersRoles ur where ur.role.role = :r and ur.user.username = :u")
 	public UsersRoles findByRoleAndUser( @Param("r")String role, @Param("u")String username  );  
+	UsersRoles save(UsersRoles usersroles);
 }

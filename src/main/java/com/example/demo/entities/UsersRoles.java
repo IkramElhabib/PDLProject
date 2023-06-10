@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 
 
 @Entity
-public class UsersRoles  implements Serializable
+public class UsersRoles 
 {
 	@Id @GeneratedValue
 	private Long id;
@@ -57,5 +57,19 @@ public class UsersRoles  implements Serializable
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public UsersRoles(Long id, User user, Role role) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.role = role;
 	} 
+	public UsersRoles( User user, Role role) {
+		super();
+		
+		this.user = user;
+		this.role = role;
+	} 
+	
 }

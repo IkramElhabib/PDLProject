@@ -1,0 +1,25 @@
+<form th:action="@{/users/add}" th:object="${user}" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required>
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    </div>
+
+    <div>
+        <label for="roles">Roles:</label>
+        <select id="roles" th:field="*{roles}" multiple required>
+            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></span>
+    </div>
+
+    <div>
+        <button type="submit">Add User</button>
+    </div>
+</form>
