@@ -91,22 +91,28 @@ public class FacturesController {
 		    public String afficherFactures(Model model) {
 		        List<Facture> factures = factureRepository.findAll();
 		        model.addAttribute("factures", factures);
+		        
 		        return "listFactures";
 		    }
 		 
 		 @GetMapping("/modifier-facture/{numero}")
 		 public String afficherFormulaireModificationFacture(@PathVariable("numero") Long numero, Model model) {
-		     Facture facture = factureRepository.findByNumero(numero);
+		     Facture facture = factureRepository.findByNumero(numero);	    
 		     model.addAttribute("facture", facture);
+		     List<Dossier> dossiers = dossierRepository.findAll();
+		        model.addAttribute("dossiers", dossiers);
 		     return "updatefacture"; 
 		 }
 
 		 @PostMapping("/modifier-facture")
 		 public String modifierFacture(@ModelAttribute("facture") Facture facture, Model model) {
 			Client client = clientRepository.findByCode(facture.getClient().getCode());
+			Dossier dossier = dossierRepository.findByNumero(facture.getDossier().getNumero());
 
 		     if (client != null) {
 		         facture.setClient(client); 
+		         facture.setDossier(dossier);
+		         
 		         factureRepository.save(facture); 
 		     } 
 		     return "redirect:/factureslist"; 
