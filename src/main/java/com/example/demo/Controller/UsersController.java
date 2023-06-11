@@ -117,4 +117,20 @@ public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bi
 	        return "redirect:/users"; // Remplacer "error-page" par le nom de votre page d'erreur personnalisée
 	    }
 	}
+	
+	@PostMapping("/{userId}/roles/delete")
+	public String deleteRoleForUser(@PathVariable("userId") String userId, @RequestParam("roleId") Long roleId) {
+	    // Récupérer l'utilisateur et le rôle en fonction des IDs fournis
+		 User user = userRepository.findByUsername(userId);
+		    Role role = roleRepository.findByIdRole(roleId);
+		    
+	    // Supprimer la relation rôle-utilisateur de la base de données
+		    UsersRoles userRole = userRolesRepository.findByUserAndRole(user, role);
+		    if (userRole != null) {
+		        userRolesRepository.delete(userRole);
+		    }
+
+	    return "redirect:/users";
+	}
 }
+

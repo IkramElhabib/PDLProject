@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UsersRoles;
 
@@ -16,4 +17,7 @@ public interface UserRolesRepository extends JpaRepository<UsersRoles, Long>
 	public UsersRoles findByRoleAndUser( @Param("r")String role, @Param("u")String username  );  
 	UsersRoles save(UsersRoles usersroles);
 	UsersRoles findByUser(User user);
+    UsersRoles findByUserAndRole(User user, Role role);
+
+
 }
