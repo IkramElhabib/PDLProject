@@ -146,63 +146,37 @@
 <!--Main layout-->
 <main style="margin-top: 58px;">
   <div class="container pt-4">
-  <div class="container">
-        <h1 class="mt-4 mb-4">Liste des commandes</h1>
-        <div class="mb-3">
-            <button id="venteBtn" type="button" class="btn btn-primary">Vente</button>
-            <button id="achatBtn" type="button" class="btn btn-primary">Achat</button>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Numéro</th>
-                    <th>Valide</th>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="commande : ${commandes}">
-                    <td th:text="${commande.numero}"></td>
-                    <td th:text="${commande.valide}"></td>
-                    <td>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr th:each="ligne : ${commande.lignesCommande}">
-                                    <td th:text="${ligne.produit.designation}"></td>
-                                    <td th:text="${ligne.qte}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td>
-                        <a th:if="${not commande.valide}" th:href="@{/ajouter-facture/{numeroCommande}(numeroCommande=${commande.numero})}">
-                            <button type="button" class="btn btn-success">Facture</button>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+ <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role Designation</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <td>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li th:each="userRole : ${user.roles}">
+                        <span th:text="${userRole.role.designation}"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="@{/users/{userId}/permissions(userId=${user.username})}" class="btn btn-primary">Change Permission</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        var venteBtn = document.getElementById('venteBtn');
-        var achatBtn = document.getElementById('achatBtn');
-
-        venteBtn.addEventListener('click', function() {
-            window.location.href = '/ventelist';
-        });
-
-        achatBtn.addEventListener('click', function() {
-            window.location.href = '/achatlist';
-        });
-    </script>
+  
   </div>
 </main>
 <!--Main layout-->
 
 </body>
 </html>
+
 

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,10 +70,51 @@ public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bi
 
     return "redirect:/users";
 }
+	@GetMapping
+	public String getUsers(Model model) {
+	    List<User> users = userRepository.findAll();
+	    model.addAttribute("users", users);
+	    return "listUser";
+	}
+	
+	@GetMapping("/{userId}/permissions")
+    public String getPermissionPage(@PathVariable("userId") String userId, Model model) {
+        User user = userRepository.findByUsername(userId);
+        List<Role> allRoles = roleRepository.findAll();
 
+        // Add the user and all roles to the model
+        model.addAttribute("user", user);
+        model.addAttribute("roles", allRoles);
 
+        return "updatepermission";
+    }
+	
+	@PostMapping("/{userId}/roles/update")
+	public String updateRoleForUser(@PathVariable("userId") String userId, @RequestParam("roleId") Long roleId, @RequestParam("action") String action) {
+	    // Get the user and role based on the provided IDs
+	    User user = userRepository.findByUsername(userId);
+	    Role role = roleRepository.findByIdRole(roleId);
 
+	    try {
+	        if ("update".equals(action)) {
+	            // Update the existing role for the user
+	            UsersRoles userRole = userRolesRepository.findByUser(user);
+	            if (userRole != null) {
+	                userRole.setRole(role);
+	                userRolesRepository.save(userRole);
+	            }
+	        } else if ("add".equals(action)) {
+	            // Add a new role for the user
+	            UsersRoles newUserRole = new UsersRoles(user, role);
+	            userRolesRepository.save(newUserRole);
+	        } else {
+	            throw new IllegalArgumentException("Invalid action: " + action);
+	        }
 
-
-
+	        return "redirect:/users";
+	    } catch (Exception e) {
+	        System.out.println("Error updating role for user: " + e.getMessage());
+	        return "redirect:/users"; // Remplacer "error-page" par le nom de votre page d'erreur personnalisée
+	    }
+	}
 }
