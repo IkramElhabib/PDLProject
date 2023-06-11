@@ -177,7 +177,7 @@ table.table .avatar {
   <!-- Sidebar -->
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
-      <div class="list-group list-group-flush mx-3 mt-4">
+  <div class="list-group list-group-flush mx-3 mt-4">
         <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
           <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
         </a>
@@ -199,7 +199,7 @@ table.table .avatar {
         <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-globe fa-fw me-3"></i><span>Gestion Des Produits</span></a
         >
-        <a href=/factureslist" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/factureslist" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-building fa-fw me-3"></i><span>Gestion Des Factures</span></a
         >
        
@@ -262,9 +262,17 @@ table.table .avatar {
 </header>
 <!--Main Navigation-->
 <main style="margin-top: 58px;">
+  <div class="container pt-4">
+  	<div class="table-responsive">
+		<div class="table-wrapper">
+		<!--title-->
+			<div class="table-title d-flex align-items-center justify-content-between">
+               <h2>Liste des factures</h2>
+               
+            </div>
+		<!--/title-->
 
-    <h1>Liste des factures</h1>
-    <table>
+ <table class="table table-striped">
         <thead>
             <tr>
                 <th>Numéro</th>
@@ -286,10 +294,16 @@ table.table .avatar {
     			<td th:text="${facture.client != null ? facture.client.nom : ''}"></td>
                 <td th:text="${facture.commande != null ? facture.commande.numero: ''}"></td>
     			<td th:text="${facture.dossier != null ? facture.dossier.nom : ''}"></td>
-    			<td><a th:href="@{/modifier-facture/{numero}(numero=${facture.numero})}">Corriger</a></td>
+    			<td><a  th:href="@{/modifier-facture/{numero}(numero=${facture.numero})}">
+                    <button type="button" class="btn btn-success">Modifier</button>
+    			</a></td>
     			
             </tr>
         </tbody>
-    </table>
+    </table>    
+		</div>
+	</div>    
+  </div>
+</main>
 </body>
 </html>

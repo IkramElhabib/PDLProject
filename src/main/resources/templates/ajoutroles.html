@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil</title>
+  <title>ajouter role</title>
   <!-- Ajoutez les liens vers les fichiers CSS de Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -54,7 +54,7 @@
   <!-- Sidebar -->
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
- <div class="list-group list-group-flush mx-3 mt-4">
+       <div class="list-group list-group-flush mx-3 mt-4">
         <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
           <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
         </a>
@@ -141,47 +141,32 @@
 
 <!--Main layout-->
 <main style="margin-top: 58px;">
-          <h1 class="mt-4 mb-4">Ouvrir dossier</h1>
-
   <div class="container pt-4">
-  
-  <form th:action="@{/dossieradd}" method="post" th:object="${dossier}">
-    <div class="form-group">
-        <label for="numero">Numéro:</label>
-        <input type="text" id="numero" name="numero" th:field="${dossier.numero}" required />
+  	<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Nouveau role</h5>
+    
+    <form th:action="@{/roles/add}" th:object="${roless}" method="post">
+   <!-- <div style="display: none;"> -->
+        <label for="id">ID:</label>
+        <input type="number" id="id" th:field="*{id}" th:value="${roless.id}" readonly>
+   <!-- </div> -->
+    <div>
+    <label for="role">Role:</label>
+    <input type="text" id="role" th:field="${roless.role}" required>
+</div>
+    
+    <div>
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" th:field="*{designation}" required>
+        <span th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></span>
     </div>
-    <div class="form-group">
-        <label for="nom">Nom:</label>
-        <input type="text" id="nom" name="nom" th:field="${dossier.nom}" required />
+    
+    <div>
+        <button type="submit">Add</button>
     </div>
-    <div class="form-group">
-        <label for="dateCreation">Date de création:</label>
-        <input type="text" id="dateCreation" name="dateCreation" th:field="${dossier.dateCreation}" readonly />
-    </div>
-    <button type="submit">Ajouter dossier</button>
 </form>
 
-<script th:inline="javascript">
-    // Récupérer la date et l'heure actuelles
-    var currentDate = new Date();
-    var year = currentDate.getFullYear();
-    var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    var day = currentDate.getDate().toString().padStart(2, '0');
-    var hours = currentDate.getHours().toString().padStart(2, '0');
-    var minutes = currentDate.getMinutes().toString().padStart(2, '0');
-    var seconds = currentDate.getSeconds().toString().padStart(2, '0');
-    
-    // Format de date et d'heure attendu: yyyy-MM-dd HH:mm:ss
-    var formattedDateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-    
-    // Affecter la date et l'heure actuelles au champ dateCreation
-    document.getElementById('dateCreation').value = formattedDateTime;
-</script>
-  
-  </div>
-</main>
-<!--Main layout-->
 
 </body>
 </html>
-

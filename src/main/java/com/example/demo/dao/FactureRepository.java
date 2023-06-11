@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entities.Dossier;
 import com.example.demo.entities.Facture;
 
 	@Repository
@@ -66,4 +67,6 @@ import com.example.demo.entities.Facture;
 		Facture findByNumero(Long numero);
 		List<Facture> findAll();
 		Facture save(Facture facture);
+		List<Facture> findByDossier(Dossier dossier);
+	    int countByDossier(Dossier dossier);
 		}

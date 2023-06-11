@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des commandes</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
+    <title>Dossier Details</title>
+    <!-- Ajouter les liens vers les fichiers CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+   
+        <style>
    body {
   background-color: #fbfbfb;
 }
@@ -172,14 +174,16 @@ table.table .avatar {
 	color: #ccc;
 }
   </style>
+
+    </style>
 </head>
 <body>
-  <!--Main Navigation-->
+ <!--Main Navigation-->
 <header>
   <!-- Sidebar -->
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
-   <div class="list-group list-group-flush mx-3 mt-4">
+     <div class="list-group list-group-flush mx-3 mt-4">
         <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
           <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
         </a>
@@ -263,84 +267,65 @@ table.table .avatar {
   <!-- Navbar -->
 </header>
 <!--Main Navigation-->
-<main style="margin-top: 58px;">
-  <div class="container pt-4">
-  	<div class="table-responsive">
-		<div class="table-wrapper">
-		<!--title-->
-			<div class="table-title d-flex align-items-center justify-content-between">
-               <h2>Liste des commandes</h2>
-               <a href="/vente/formulaire" class="btn btn-primary">
-                <span class="fw-bold me-2">+</span>
-                 Ajouter commande
-               </a>
-            </div>
-		<!--/title-->
 
-        <div class="mb-3">
-            <button id="venteBtn" type="button" class="btn btn-primary">Vente</button>
-            <button id="achatBtn" type="button" class="btn btn-primary">Achat</button>
+    <!-- Main layout -->
+    <main style="margin-top: 58px;">
+    <div class="container">
+        <h1>Dossier Details</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Dossier Information</h2>
+                <p class="card-text">Dossier Name: <span th:text="${dossier.nom}"></span></p>
+                <!-- Ajouter d'autres détails du dossier au besoin -->
+            </div>
         </div>
         
- <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Numéro</th>
-                    <th>Valide</th>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Action</th>
-                </tr>
-             </thead>
-            <tbody>
-                <tr th:each="commande : ${commandes}">
-                    <td th:text="${commande.numero}"></td>
-                    <td th:text="${commande.valide}"></td>
-                    <td>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr th:each="ligne : ${commande.lignesCommande}">
-                                    <td th:text="${ligne.produit.designation}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                     <td>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr th:each="ligne : ${commande.lignesCommande}">
-                                    <td th:text="${ligne.qte}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td>
-                        <a th:if="${not commande.valide}" th:href="@{/ajouter-facture/{numeroCommande}(numeroCommande=${commande.numero})}">
-                            <button type="button" class="btn btn-success">Facture</button>
-                        </a>
-                    </td>
-                   
-                </tr>
-            </tbody>
-        </table>
-		</div>
-	</div>    
-  </div>
-</main>
-<!--Main layout-->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        var venteBtn = document.getElementById('venteBtn');
-        var achatBtn = document.getElementById('achatBtn');
-
-        venteBtn.addEventListener('click', function() {
-            window.location.href = '/ventelist';
-        });
-
-        achatBtn.addEventListener('click', function() {
-            window.location.href = '/achatlist';
-        });
-    </script>  
+        <div class="card mt-3">
+            <div class="card-body">
+                <h2 class="card-title">Commands</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Command Number</th>
+                            <th>Date</th>
+                            <!-- Ajouter d'autres en-têtes de commandes au besoin -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="commande : ${commandes}">
+                            <td th:text="${commande.numero}"></td>
+                            <td th:text="${#dates.format(commande.dateCommande, 'dd-MM-yyyy')}"></td>
+                            <!-- Ajouter d'autres détails de commandes au besoin -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h2 class="card-title">Invoices</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>Date</th>
+                            <!-- Ajouter d'autres en-têtes de factures au besoin -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="facture : ${factures}">
+                            <td th:text="${facture.numero}"></td>
+                            <td th:text="${#dates.format(facture.dateFacture, 'dd-MM-yyyy')}"></td>
+                            <!-- Ajouter d'autres détails de factures au besoin -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>

@@ -82,5 +82,6 @@ public interface CommandeRepository extends JpaRepository<Commande, Long>
     List<Commande> findByDossier(Dossier dossier);
 	Commande save(Commande commande);
 	Commande findByNumero(long numero);
+	int countByDossier(Dossier dossier);
 	
 }
