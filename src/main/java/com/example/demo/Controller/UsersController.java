@@ -133,4 +133,3 @@ public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bi
 	    return "redirect:/users";
 	}
 }
-
