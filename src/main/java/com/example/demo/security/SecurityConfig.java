@@ -26,7 +26,28 @@ import jakarta.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
+	/*@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/registration/**").permitAll()
+                        .requestMatchers("/logintest/**").permitAll()
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .anyRequest().authenticated()
+                )//.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .formLogin((form) -> form
+                        .loginPage("/logintest")
+                        .defaultSuccessUrl("/user/garde")
+                        .permitAll()
+                )
+                .logout((logout) -> logout.permitAll())
+                .exceptionHandling().accessDeniedPage("/access-denied");
+        
+
+        return http.build();
+    }*/
 	/* static HashMap<String, String> pages = new HashMap<String, String>() {{
 	        put("SHOW_DASHBOARD", "/");
 	        put("SHOW_STATISTIQUES", "/statistiques");
@@ -120,5 +141,7 @@ public class SecurityConfig{
 	       
 	 	
 }*/
+	
+	
 
 }
