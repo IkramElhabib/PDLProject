@@ -1,8 +1,10 @@
 package com.example.demo.Controller;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +17,13 @@ import com.example.demo.dao.ClientRepository;
 import com.example.demo.dao.CommandeRepository;
 import com.example.demo.dao.DossierRepository;
 import com.example.demo.dao.FactureRepository;
+import com.example.demo.dao.FournisseurRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Dossier;
 import com.example.demo.entities.Facture;
+import com.example.demo.entities.Fournisseur;
+import com.example.demo.entities.LigneCommande;
 
 @Controller
 public class FacturesController {
@@ -27,6 +32,8 @@ public class FacturesController {
 	CommandeRepository commandeRepository;
 	DossierRepository dossierRepository;
 	ClientRepository clientRepository;
+	@Autowired
+	FournisseurRepository fournisseurRepository;
 	
 	public FacturesController(FactureRepository factureRepository, CommandeRepository commandeRepository, DossierRepository dossierRepository, ClientRepository clientRepository) {
         this.factureRepository = factureRepository;
@@ -37,42 +44,60 @@ public class FacturesController {
 	
 	 @GetMapping("/ajouter-facture/{numeroCommande}")
 	    public String afficherFormulaireFacture(@PathVariable("numeroCommande") long numeroCommande, Model model) {
-	        Commande commande = commandeRepository.findByNumero(numeroCommande);
+		  Facture facture = new Facture();   
+		 Commande commande = commandeRepository.findByNumero(numeroCommande);
 	        List<Dossier> dossiers = dossierRepository.findByDateFermetureIsNull();
 
 	        model.addAttribute("numeroCommande", commande.getNumero());
-	        model.addAttribute("client", commande.getClient());
-	        model.addAttribute("dossiers", dossiers);
+	       
+	        if (commande.getClient() != null) {
+	            // Si la commande a un client, définissez-le sur l'objet "commande"
+	            commande.getClient().setCode(commande.getClient().getCode());
+	            model.addAttribute("client", commande.getClient());
+	        }
 
-	        Facture facture = new Facture();
+	        if (commande.getFournisseur() != null) {
+	            // Si la commande a un fournisseur, définissez-le sur l'objet "commande"
+	            commande.getFournisseur().setCode(commande.getFournisseur().getCode());
+	            model.addAttribute("fournisseur", commande.getFournisseur());
+	        }
+
+	    	
+	        model.addAttribute("dossiers", dossiers);
 	        
-	        // Création d'un nouvel objet Facture avec les valeurs initiales
+	        double totalLigneCommande = 0.0;
+	        Collection<LigneCommande> lignesCommande = commande.getLignesCommande();
+
+	     // Assuming you have a collection of LigneCommande objects called lignesCommande
+	     for (LigneCommande ligneCommande : lignesCommande) {
+	         totalLigneCommande += ligneCommande.getTotal();
+	     }
+  
 	        facture.setCommande(commande);
-	        facture.setClient(commande.getClient());
-	        
+
+	       
+	        facture.setTotal(totalLigneCommande);
+
 	        model.addAttribute("facture", facture);
 	        return "facture";
 	    }
 	 
 	 @PostMapping("/sauvegarder-facture")
 	    public String sauvegarderFacture(@ModelAttribute("facture") Facture facture, Model model) {
-		 
-		 	Client client = facture.getClient();
-		 	 if (client.getCode() == null) {
-		         // Create a new client instance
-		         client = new Client();
-		         client.setNom(facture.getClient().getNom());
-		         // Set other client properties as needed
-		     } else {
-		         // Retrieve the existing client from the database
-		         client = clientRepository.findById(client.getCode()).orElse(null);
-		     }
-		 	 // Set the client in the facture
-		     facture.setClient(client);
+		 	
+		 	Commande commande = facture.getCommande();
 
+		 	if (commande.getClient() == null && commande.getFournisseur() != null) {
+		 		  Fournisseur fournisseur = commande.getFournisseur();
+		 	        facture.setFournisseur(fournisseur);
+		        facture.setFournisseur(fournisseur);
+		    } else if (commande.getFournisseur() == null && commande.getClient() != null) {
+		    	 Client client = commande.getClient();
+		         facture.setClient(client);
+		       
+		    }
 	        
 	        // Mettre à jour l'état de validité de la commande
-	        Commande commande = facture.getCommande();
 	        commande.setValide(true);
 	        
 	     // Récupérer le dossier sélectionné par son ID
@@ -81,11 +106,11 @@ public class FacturesController {
 
 	        // Associer le dossier à la facture
 	        facture.setDossier(dossier);
-	        
 	        commandeRepository.save(commande);
 	        factureRepository.save(facture);
 		 
-	        return "redirect:/factureslist";
+	        
+	        return "redirect:/commandeslist";
 	    }
 		 @GetMapping("/factureslist")
 		    public String afficherFactures(Model model) {

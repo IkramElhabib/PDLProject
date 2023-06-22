@@ -121,8 +121,7 @@ public class FournisseurController {
 	 public String ajouterFournisseur(@ModelAttribute @Valid Fournisseur fournisseur, BindingResult bindingResult, Model model) {
 	     if (bindingResult.hasErrors()) {
 	         // If there are validation errors, return to the form with the error messages
-	        // return "listProduits";
-	    	 return "ajoutFournisseur";
+	         return "listProduits";
 	     }
 	     Fournisseur existingFournisseur = fournisseurRepository.findByCode(fournisseur.getCode());
 	     if (existingFournisseur != null) {
@@ -136,8 +135,7 @@ public class FournisseurController {
 	     // Add success message to the model
 	     model.addAttribute("successMessage", "Fournisseur ajouté avec succès.");
 
-	    // return "redirect:/fournisseur/add";
-	     return "redirect:/listFournisseur";
+	     return "redirect:/fournisseur/add";
 	 }
 	 
 	 @GetMapping("/listFournisseur")

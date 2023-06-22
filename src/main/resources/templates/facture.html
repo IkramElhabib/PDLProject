@@ -197,10 +197,8 @@ table.table .avatar {
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
       <div class="list-group list-group-flush mx-3 mt-4">
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+        
+        <a href="/users" class="list-group-item list-group-item-action py-2 ripple ">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
         <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
@@ -218,7 +216,7 @@ table.table .avatar {
         <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-globe fa-fw me-3"></i><span>Gestion Des Produits</span></a
         >
-        <a href="/factureslist" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/factureslist" class="list-group-item list-group-item-action py-2 ripple active"
           ><i class="fas fa-building fa-fw me-3"></i><span>Gestion Des Factures</span></a
         >
        
@@ -289,12 +287,33 @@ table.table .avatar {
 
             <div class="form-group">
                 <label for="dateFacture">Date de facture:</label>
-                <input type="date" id="dateFacture" th:field="*{dateFacture}" class="form-control" required />
+                <input type="date" id="dateFacture" name="dateFacture" th:field="*{dateFacture}" class="form-control" required />
             </div>
 
             <div class="form-group">
-                <label for="total">Total:</label>
-                <input type="number" id="total" th:field="*{total}" step="0.01" class="form-control" required />
+                <input type="number" id="total" th:field="*{total}" th:with="total=0.0">
+		<th:block th:if="${facture.commande.lignesCommande != null and not #lists.isEmpty(facture.commande.lignesCommande)}">
+		    <th:block th:if="${#lists.size(facture.commande.lignesCommande) == 1}">
+		        <p>Total ligne de commande : <span th:text="${facture.commande.lignesCommande[0].total}"></span></p>
+		    </th:block>
+		    <th:block th:if="${#lists.size(facture.commande.lignesCommande) > 1}">
+		        <th:block th:each="ligneCommande : ${facture.commande.lignesCommande}">
+		            <!-- Supposons que vous avez une propriété "total" dans l'objet LigneCommande -->
+		            <th:block th:with="ligneTotal=${ligneCommande.total}">
+		                <!-- Affichez le total de chaque ligne -->
+		                <p>Total ligne de commande : <span th:text="${ligneTotal}"></span></p>
+		                <!-- Ajoutez le total de la ligne à la variable accumulée -->
+		                <th:block th:with="total=${total + ligneTotal}"></th:block>
+		            </th:block>
+		        </th:block>
+		        <!-- Affichez le total accumulé dans le champ "total" de la facture -->
+		        <p>Total facture : <span th:text="${total}"></span></p>
+    </th:block>
+</th:block>
+<th:block th:unless="${facture.commande.lignesCommande != null and not #lists.isEmpty(facture.commande.lignesCommande)}">
+    <p>Aucune ligne de commande disponible</p>
+</th:block>
+
             </div>
 
             <div class="form-group">
@@ -304,7 +323,9 @@ table.table .avatar {
 
             <div class="form-group">
                 <label for="client">Client:</label>
-                <input type="text" th:field="*{client}" th:value="${facture.commande.client}" class="form-control" readonly />
+            	    <input type="hidden" th:if="${facture.commande.client != null}"  th:field="*{commande.client}" th:value="${facture.commande.client}" class="form-control" readonly />
+            		<input type="hidden" th:if="${facture.commande.fournisseur != null}"  th:field="*{commande.fournisseur}" th:value="${facture.commande.fournisseur}" class="form-control" readonly />
+            	
             </div>
 
             <div class="form-group">

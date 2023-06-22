@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ajouter role</title>
+  <title>Accueil</title>
   <!-- Ajoutez les liens vers les fichiers CSS de Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  
   <style>
    body {
   background-color: #fbfbfb;
@@ -54,15 +56,15 @@
   <!-- Sidebar -->
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
-       <div class="list-group list-group-flush mx-3 mt-4">
-        
-        <a href="/users" class="list-group-item list-group-item-action py-2 ripple active">
+<div class="list-group list-group-flush mx-3 mt-4">
+       
+        <a href="/users" class="list-group-item list-group-item-action py-2 ripple ">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
         <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-lock fa-fw me-3"></i><span>Gestion Des Clients</span></a
         >
-        <a href="/listFournisseur" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/listFournisseur" class="list-group-item list-group-item-action py-2 ripple active"
           ><i class="fas fa-chart-line fa-fw me-3"></i><span>Gestion Des Fournisseurs</span></a
         >
         <a href="/commandeslist" class="list-group-item list-group-item-action py-2 ripple">
@@ -140,32 +142,74 @@
 <!--Main layout-->
 <main style="margin-top: 58px;">
   <div class="container pt-4">
-  	<div class="card">
+<div class="card">
     <div class="card-body">
-        <h5 class="card-title">Nouveau role</h5>
-    
-    <form th:action="@{/roles/add}" th:object="${roless}" method="post">
-   <!-- <div style="display: none;"class="form-group"> -->
-        <label for="id">ID:</label>
-        <input class="form-control" type="number" id="id" th:field="*{id}" th:value="${roless.id}" readonly>
-   <!-- </div> -->
-   
-    <div class="form-group">
-    <label for="role">Role:</label>
-    <input class="form-control" type="text" id="role" th:field="${roless.role}" required>
-</div>
-    
-    <div class="form-group">
-        <label for="designation">Designation:</label>
-        <input class="form-control" type="text" id="designation" th:field="*{designation}" required>
-        <span th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></span>
-    </div>
-    
-    <div class="form-group">
-        <button type="submit" class="btn btn-success btn-lg btn-block">Add</button>
-    </div>
-</form>
+        <h5 class="card-title">Manage User Roles</h5>
 
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{'/users/' + ${userId} + '/roles/update'}" method="post">
+                    <div class="form-group">
+                        <label for="roleId">Role:</label>
+                        <select id="roleId" name="roleId" class="form-control">
+                            <option value="">-- Select a role --</option>
+                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.designation}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" name="action" value="update" th:unless="${roles.size() > 1}" class="btn btn-primary">Update Role</button>
+                        <button type="submit" name="action" value="add" class="btn btn-primary">Add Role</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Roles for User: ${user.username}</h5>
+                <table class="table" id="userRolesTable">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="userRole : ${user.roles}">
+                            <td th:text="${userRole.role.designation}"></td>
+                            <td>
+                                <form th:action="@{'/users/' + ${user.username} + '/roles/delete'}" method="post" class="deleteRoleForm">
+                                    <input type="hidden" name="roleId" th:value="${userRole.role.id}" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Ajouter une fonction pour confirmer la suppression d'un rôle
+        $(".deleteRoleForm").on("submit", function() {
+            return confirm("Are you sure you want to delete this role?");
+        });
+
+        // Activer les fonctionnalités de DataTables pour la table des rôles utilisateur
+        $("#userRolesTable").DataTable();
+    });
+</script>
+
+
+
+  </div>
+</main>
+<!--Main layout-->
 
 </body>
 </html>

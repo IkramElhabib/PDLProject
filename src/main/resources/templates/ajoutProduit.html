@@ -185,10 +185,8 @@ table.table .avatar {
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
      <div class="list-group list-group-flush mx-3 mt-4">
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+        
+        <a href="/users" class="list-group-item list-group-item-action py-2 ripple ">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
         <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
@@ -197,13 +195,13 @@ table.table .avatar {
         <a href="/listFournisseur" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-chart-line fa-fw me-3"></i><span>Gestion Des Fournisseurs</span></a
         >
-        <a href="/commandeslist" class="list-group-item list-group-item-action py-2 ripple">
+        <a href="/commandeslist" class="list-group-item list-group-item-action py-2 ripple ">
           <i class="fas fa-chart-pie fa-fw me-3"></i><span>Gestion Des Commandes</span>
         </a>
         <a href="/dossiers" class="list-group-item list-group-item-action py-2 ripple"
           ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Gestion Des Dossiers</span></a
         >
-        <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple"
+        <a href="/listProd" class="list-group-item list-group-item-action py-2 ripple active"
           ><i class="fas fa-globe fa-fw me-3"></i><span>Gestion Des Produits</span></a
         >
         <a href="/factureslist" class="list-group-item list-group-item-action py-2 ripple"
@@ -276,29 +274,27 @@ table.table .avatar {
                 <div class="card-body">
                     <h5 class="card-title">Nouveau Produit</h5>
                     <form method="post" th:action="@{/addProd}">
-                        <h2>Register</h2>
-                        <p class="hint-text">Create your account. It's free and only takes a minute.</p>
                         <div th:if="${successMessage}" class="alert alert-success" role="alert">
                             <p th:text="${successMessage}"></p>
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col">
+                                <div class="col">Reference
                                     <input type="text" class="form-control" th:field="${produit.ref}" placeholder="Ref" required="required">
                                     <small th:if="${#fields.hasErrors('produit.ref')}" th:errors="${produit.ref}" class="text-danger"></small>
                                 </div>
-                                <div class="col">
+                                <div class="col"designation>
                                     <input type="text" class="form-control" th:field="${produit.designation}" placeholder="Designation" required="required">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group">Prix
                             <input type="number" class="form-control" th:field="${produit.prix}" placeholder="Prix" required="required" min="0">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group">Quantite
                             <input type="number" class="form-control" th:field="${produit.quantite}" placeholder="Quantite" required="required" min="0">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group">Quantite Alert
                             <input type="number" class="form-control" th:field="${produit.quantiteAlert}" placeholder="Quantite Alert" required="required" min="0">
                         </div>
                         <div class="form-group">

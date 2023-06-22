@@ -181,10 +181,8 @@ table.table .avatar {
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
   <div class="list-group list-group-flush mx-3 mt-4">
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+        
+        <a href="/users" class="list-group-item list-group-item-action py-2 ripple active">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
         <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
@@ -265,6 +263,7 @@ table.table .avatar {
 </header>
 <!--Main Navigation-->
 <!--Main Navigation-->
+<!--Main layout-->
 <main style="margin-top: 58px;">
   <div class="container pt-4">
   	<div class="table-responsive">
@@ -272,37 +271,39 @@ table.table .avatar {
 		<!--title-->
 			<div class="table-title d-flex align-items-center justify-content-between">
                <h2>Liste des roles</h2>
-               <a href="/role/add" class="btn btn-primary">
+               <a href="/roles/add" class="btn btn-primary">
                 <span class="fw-bold me-2">+</span>
                  Ajouter role
                </a>
             </div>
 		<!--/title-->
+  <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Role</th>
+                    <th>Designation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="role : ${roles}">
+                    <td th:text="${role.id}"></td>
+                    <td th:text="${role.role}"></td>
+                    <td th:text="${role.designation}"></td>
+                    <td>
+                       <!-- <a class="btn btn-primary" th:href="@{/roles/edit/{id}(id=${role.id})}">Modifier</a> -->
+                        <a class="btn btn-danger" th:href="@{/roles/delete/{id}(id=${role.id})}">Delete</a>
+                    </td>           
+                </tr>
+            </tbody>
+        </table>
 
-    
-  <table  class="table table-striped table-hover">
-        <tr>
-            <th>ID</th>
-            <th>Role</th>
-            <th>Designation</th>
-            <th>Actions</th>
-        </tr>
-        <tr th:each="role : ${roles}">
-            <td th:text="${role.id}"></td>
-            <td th:text="${role.role}"></td>
-            <td th:text="${role.designation}"></td>
- 			<td>
-                 <a th:href="@{/roles/edit/{id}(id=${role.id})}">Modifier</a>
-                 <a th:href="@{/roles/delete/{id}(id=${role.id})}">Delete</a>
-                 
-            </td>           
-            
-        </tr>
-    </table>
-    	</div>
+</div>
 	</div>        
   </div>
 </main>
 <!--Main layout-->
+
 </body>
 </html>
