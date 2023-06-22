@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +28,13 @@ import jakarta.servlet.Filter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	/*@Bean
+	
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+    
+	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
@@ -39,7 +46,7 @@ public class SecurityConfig {
                 )//.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin((form) -> form
                         .loginPage("/logintest")
-                        .defaultSuccessUrl("/user/garde")
+                        .defaultSuccessUrl("/indextest")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll())
@@ -47,7 +54,7 @@ public class SecurityConfig {
         
 
         return http.build();
-    }*/
+    }
 	/* static HashMap<String, String> pages = new HashMap<String, String>() {{
 	        put("SHOW_DASHBOARD", "/");
 	        put("SHOW_STATISTIQUES", "/statistiques");

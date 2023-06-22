@@ -1,79 +1,138 @@
-<!DOCTYPE html>
-
-<html  	xmlns:th="http://www.thymeleaf.org"
-		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" >
-
-
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Connexion</title>  	
-    
-	<style type="text/css">
-		
-
-		#login-container{
-		border:1px solid gray;border-color:rgba(255,255,255,0.1);border-radius:10px;
-		-moz-border-radius:10px;-webkit-border-radius:10px;-khtml-border-radius:10px;
-		margin:0 auto; }
-		
-		#login-sub-container{
-		border:1px solid #333;border-color:rgba(0,0,0,0.2);border-radius:10px;
-		-moz-border-radius:10px;-webkit-border-radius:10px;-khtml-border-radius:10px;
-		box-shadow:0 0 10px #000 inset; left:5px; }
-		
-		#login-sub-header{
-		background-color:#02435d;background-color:rgba(2,67,93,0.75);
-		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#c002435d,endColorstr=#c002435d);
-		border-bottom:1px solid #002F3F;border-radius:5px 5px 0 0;-moz-border-radius:5px 5px 0 0;
-		-webkit-border-radius:5px 5px 0 0;-khtml-border-radius:5px 5px 0 0;  }
-		 
-		#login-sub{
-		background-color:#035271;background-color:rgba(3,82,113,0.75);
-		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#c0035271,endColorstr=#c0035271);
-		border-radius:0 0 5px 5px;-moz-border-radius:0 0 5px 5px;-webkit-border-radius:0 0 5px 5px;
-		-khtml-border-radius:0 0 5px 5px;border-top:1px solid #0D7291; 
-		 color:white;font-size:12px; }
-		
-		button,button[disabled]:active,input[type=submit],input[type=submit][disabled]:active,input[type=button],input[type=button][disabled]:active,.login-btn a.loginbtn{
-		background:#02324A;background-image:-moz-linear-gradient(#1090b0,#096479);background-image:-o-linear-gradient(#1090b0,#096479);background-image:-ms-linear-gradient(#1090b0,#096479);-cp-background-image:linear-gradient(#1090b0,#096479);behavior:url(/cPanel_magic_revision_1331293173/unprotected/cjt/ie9gradients.htc);background-image:-webkit-gradient(linear,left top,left bottom,from(#1090b0),to(#096479));filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#1090b0',EndColorStr='#096479',GradientType=0);border:1px solid #01303f;-moz-box-shadow:0 0 2px 2px #034C64;-webkit-box-shadow:0 0 2px 2px #034C64;box-shadow:0 0 2px 2px #034C64;text-shadow:0 1px 0 #063A46;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;-khtml-border-radius:3px;border-radius:3px;color:#FFF;cursor:pointer;font-size:12px;font-weight:bold;padding:4px 10px;width:auto;overflow:visible;}
-		
-		
-		button:active,input[type=submit]:active,input[type=button]:active,.login-btn a.loginbtn:hover{
-		background-color:#F90!important;background-image:-moz-linear-gradient(#096479,#1090b0);background-image:-o-linear-gradient(#096479,#1090b0);background-image:-ms-linear-gradient(#096479,#1090b0);-cp-background-image:linear-gradient(#096479,#1090b0);background-image:-webkit-gradient(linear,left top,left bottom,from(#096479),to(#1090b0));filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#096479',EndColorStr='#1090b0',GradientType=0);-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;}
-		
-		
-		button[disabled],button[disabled]:active,input[type=submit][disabled],input[type=submit][disabled]:active,input[type=button][disabled],input[type=button][disabled]:active{
-		border:1px solid #034c64;color:#034c64;cursor:default;}
- 	
- 	 
+   <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Connexion</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<style>
+	body {
+	color: #999;
+	background: #f5f5f5;
+	font-family: 'Roboto', sans-serif;
+}
+.form-control, .form-control:focus, .input-group-addon {
+	border-color: #e1e1e1;
+	border-radius: 0;
+}
+.signup-form {
+	width: 390px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.signup-form h2 {
+	color: #636363;
+	margin: 0 0 15px;
+	text-align: center;
+}
+.signup-form .lead {
+	font-size: 14px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+.signup-form form {		
+	border-radius: 1px;
+	margin-bottom: 15px;
+	background: #fff;
+	border: 1px solid #f3f3f3;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+}
+.signup-form .form-group {
+	margin-bottom: 20px;
+}
+.signup-form label {
+	font-weight: normal;
+	font-size: 13px;
+}
+.signup-form .form-control {
+	min-height: 38px;
+	box-shadow: none !important;
+	border-width: 0 0 1px 0;
+}	
+.signup-form .input-group-addon {
+	max-width: 42px;
+	text-align: center;
+	background: none;
+	border-bottom: 1px solid #e1e1e1;
+	padding-left: 5px;
+}
+.signup-form .btn, .signup-form .btn:active {        
+	font-size: 16px;
+	font-weight: bold;
+	background: #19aa8d !important;
+	border-radius: 3px;
+	border: none;
+	min-width: 140px;
+}
+.signup-form .btn:hover, .signup-form .btn:focus {
+	background: #179b81 !important;
+}
+.signup-form a {
+	color: #19aa8d;
+	text-decoration: none;
+}	
+.signup-form a:hover {
+	text-decoration: underline;
+}
+.signup-form .fa {
+	font-size: 21px;
+	position: relative;
+	top: 8px;
+}
+.signup-form .fa-paper-plane {
+	font-size: 17px;
+}
+.signup-form .fa-check {
+	color: #fff;
+	left: 9px;
+	top: 18px;
+	font-size: 7px;
+	position: absolute;
+}
 	</style>
-	
-<body class="bg-dark">  
-<div class="mt-5">
-		<div class="container col-md-4 p-2" id="login-container">
-            <div id="login-sub-container" >
-                <div id="login-sub-header" class="p-2 pt-3"  >
-                   	<img alt="LOGO" th:src="@{/resources/img/logo.png}" style="width: 50px"> 
-                	<span class="h4 text-light">Authentification</span>
-                </div>
-                <div id="login-sub" class="p-5"> 
-                	
-                	<form th:action="@{/login}" method="post">
-		               <div class="form-group">
-		                 <label>Login</label>
-		                 <input name="username" type="text" id="username" class="form-control" placeholder="Enter email"> </div>
-		               <div class="form-group">
-		                 <label>Password</label>
-		                 <input name="password" id="password" type="password" class="form-control" placeholder="Password"> </div>
-		               <button type="submit" class="btn btn-secondary">Login</button>
-		             </form><br>
-		             <h5 th:if="${param.error}" class="alert alert-info text-danger">
-		             	Username / password incorrect !</h5>
-	  
-                </div> 
-            </div>                
+</head>
+<html>
+<body>
+<div class="signup-form">	
+    <form  role="form" th:action="@{/logintest}" method="post">
+		<h2>S'authentifier</h2>
+			
+            
+		<p class="lead">S'authentifier ici</p>
+        <div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
+				<input type="email" class="form-control" id="username" name="username" placeholder="email" required="required">
+			</div>
+      
         </div>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+				<input type="password" id="password" class="form-control" name="password" placeholder="Password" required="required">
+			</div>
+        </div>
+		        
+		<div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
+        </div>
+    </form>
+    <div th:if="${param.error}">
+                <div class="alert alert-danger">Invalid Email or Password !!!</div>
+            </div>
+            <div th:if="${param.logout}">
+                <div class="alert alert-success">You have been logged out !!!</div>
+            </div>
 
 </div>
-</body> 
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
 </html>
