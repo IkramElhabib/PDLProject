@@ -173,6 +173,30 @@ table.table .avatar {
 	color: #ccc;
 }
   </style>
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('searchInput');
+      var clientRows = document.getElementsByClassName('client-row');
+
+      function performSearch() {
+        var query = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < clientRows.length; i++) {
+          var clientRow = clientRows[i];
+          var clientName = clientRow.getAttribute('data-client-name');
+
+          if (clientName.toLowerCase().includes(query)) {
+            clientRow.style.display = ''; // Afficher la ligne si elle correspond à la recherche
+          } else {
+            clientRow.style.display = 'none'; // Masquer la ligne si elle ne correspond pas à la recherche
+          }
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+
 </head>
 <body>
   <!--Main Navigation-->
@@ -235,9 +259,9 @@ table.table .avatar {
           loading="lazy"
         />
       </a>
-      <!-- Search form -->
-      <form class="d-none d-md-flex input-group w-auto my-auto">
+       <form class="d-none d-md-flex input-group w-auto my-auto">
         <input
+          id="searchInput"
           autocomplete="off"
           type="search"
           class="form-control rounded"
@@ -299,7 +323,7 @@ table.table .avatar {
         </tr>
     </thead>
     <tbody>
-        <tr th:each="client : ${clients}">
+        <tr th:each="client : ${clients}" class="client-row" th:data-client-name="${client.nom}">
             <td>
                 <span class="custom-checkbox">
                     <input type="checkbox" id="checkbox1" name="options[]" value="1">
@@ -323,6 +347,7 @@ table.table .avatar {
 		</div>
 	</div>    
   </div>
+ 
 </main>
 <!--Main layout-->
 

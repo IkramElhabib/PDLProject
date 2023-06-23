@@ -135,7 +135,7 @@ public class FournisseurController {
 	     // Add success message to the model
 	     model.addAttribute("successMessage", "Fournisseur ajouté avec succès.");
 
-	     return "redirect:/fournisseur/add";
+	     return "redirect:/listFournisseur";
 	 }
 	 
 	 @GetMapping("/listFournisseur")

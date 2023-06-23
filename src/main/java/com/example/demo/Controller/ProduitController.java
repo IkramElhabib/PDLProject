@@ -82,7 +82,7 @@ public class ProduitController {
 	     // Add success message to the model
 	     model.addAttribute("successMessage", "Produit ajouté avec succès.");
 
-	     return "redirect:/listProd";
+	     return "redirect:/produits/add";
 	 }
 
 	 

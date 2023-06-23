@@ -281,7 +281,7 @@ table.table .avatar {
         
         <div class="card mt-3">
             <div class="card-body">
-                <h2 class="card-title">Commands</h2>
+                <h2 class="card-title">liste des Commandes</h2>
                 <table class="table">
                     <thead>
                         <tr>
@@ -303,7 +303,7 @@ table.table .avatar {
         
         <div class="card mt-3">
             <div class="card-body">
-                <h2 class="card-title">Invoices</h2>
+                <h2 class="card-title">Liste des factures des commandes </h2>
                 <table class="table">
                     <thead>
                         <tr>
@@ -315,6 +315,8 @@ table.table .avatar {
                     <tbody>
                         <tr th:each="facture : ${factures}">
                             <td th:text="${facture.numero}"></td>
+                            <td th:text="${facture.client.nom}"></td>
+                             <td th:text="${facture.total}"></td>
                             <td th:text="${#dates.format(facture.dateFacture, 'dd-MM-yyyy')}"></td>
                             <!-- Ajouter d'autres détails de factures au besoin -->
                         </tr>

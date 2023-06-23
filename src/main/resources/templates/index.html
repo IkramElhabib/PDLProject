@@ -55,10 +55,8 @@
   <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
       <div class="list-group list-group-flush mx-3 mt-4">
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+        
+        <a href="/users" class="list-group-item list-group-item-action py-2 ripple active">
           <i class="fas fa-chart-area fa-fw me-3"></i><span>Gestion Des Utilisateurs</span>
         </a>
         <a href="/listClients" class="list-group-item list-group-item-action py-2 ripple"
@@ -139,13 +137,53 @@
 </header>
 <!--Main Navigation-->
 
-<!--Main layout-->
 <main style="margin-top: 58px;">
   <div class="container pt-4">
-  
+  	<div class="table-responsive">
+		<div class="table-wrapper">
+		<!--title-->
+			<div class="table-title d-flex align-items-center justify-content-between">
+               <h2>Liste des utilisateur</h2>
+               <a href="/users/add" class="btn btn-primary">
+                <span class="fw-bold me-2">+</span>
+                 Ajouter  utilisateur
+               </a>
+               <a href="/roles/add" class="btn btn-primary">
+                <span class="fw-bold me-2">+</span>
+                 Ajouter  role
+               </a>
+            </div>
+            
+		<!--/title-->
+ <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role Designation</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <td>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li th:each="userRole : ${user.roles}">
+                        <span th:if="${userRole.role != null}" th:text="${userRole.role.designation}"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="@{/users/{userId}/permissions(userId=${user.username})}" class="btn btn-primary">Change Permission</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+		</div>
+	</div>    
   </div>
 </main>
-<!--Main layout-->
-
 </body>
 </html>
+
+

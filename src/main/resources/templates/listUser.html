@@ -47,6 +47,30 @@
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
   </style>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('searchInput');
+      var clientRows = document.getElementsByClassName('client-row');
+
+      function performSearch() {
+        var query = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < clientRows.length; i++) {
+          var clientRow = clientRows[i];
+          var clientName = clientRow.getAttribute('data-client-name');
+
+          if (clientName.toLowerCase().includes(query)) {
+            clientRow.style.display = ''; // Afficher la ligne si elle correspond à la recherche
+          } else {
+            clientRow.style.display = 'none'; // Masquer la ligne si elle ne correspond pas à la recherche
+          }
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+  
 </head>
 <body>
   <!--Main Navigation-->
@@ -111,7 +135,8 @@
       </a>
       <!-- Search form -->
       <form class="d-none d-md-flex input-group w-auto my-auto">
-        <input
+        <input          id="searchInput"
+        
           autocomplete="off"
           type="search"
           class="form-control rounded"
@@ -159,12 +184,12 @@
     <thead>
         <tr>
             <th>Username</th>
-            <th>Role Designation</th>
+            <th>Role </th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="user : ${users}">
+        <tr th:each="user : ${users}" class="client-row" th:data-client-name="${user.username}">
             <td th:text="${user.username}"></td>
             <td>
                 <ul style="list-style-type: none; padding-left: 0;">

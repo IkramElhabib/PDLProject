@@ -170,8 +170,11 @@ public class CommandesController {
     @GetMapping("/ligne/form")
     public String afficherFormulaireLigne(Model model, @RequestParam(value = "numero", required = false) Integer numero) {
         List<Client> clients = clientRepository.findAll();
+        List<Fournisseur> fournisseurs= fournisseurRepository.findAll();
+
         List<Produit> produits = produitRepository.findAll();
         model.addAttribute("clients", clients);
+        model.addAttribute("fournisseurs", fournisseurs);
 
         if (numero != null) {
             Commande commande = commandeRepository.findByNumero(numero);

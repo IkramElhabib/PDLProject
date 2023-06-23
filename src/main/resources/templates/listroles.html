@@ -173,6 +173,30 @@ table.table .avatar {
 	color: #ccc;
 }
   </style>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('searchInput');
+      var clientRows = document.getElementsByClassName('client-row');
+
+      function performSearch() {
+        var query = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < clientRows.length; i++) {
+          var clientRow = clientRows[i];
+          var clientName = clientRow.getAttribute('data-client-name');
+
+          if (clientName.toLowerCase().includes(query)) {
+            clientRow.style.display = ''; // Afficher la ligne si elle correspond à la recherche
+          } else {
+            clientRow.style.display = 'none'; // Masquer la ligne si elle ne correspond pas à la recherche
+          }
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+  
 </head>
 <body>
   <!--Main Navigation-->
@@ -237,7 +261,8 @@ table.table .avatar {
       </a>
       <!-- Search form -->
       <form class="d-none d-md-flex input-group w-auto my-auto">
-        <input
+        <input          id="searchInput"
+        
           autocomplete="off"
           type="search"
           class="form-control rounded"

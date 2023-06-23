@@ -170,6 +170,30 @@ table.table .avatar {
 	color: #ccc;
 }
   </style>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('searchInput');
+      var factureRows = document.getElementsByClassName('facture-row');
+
+      function performSearch() {
+        var query = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < factureRows.length; i++) {
+          var factureRow = factureRows[i];
+          var clientName = factureRow.getAttribute('data-client-name');
+
+          if (clientName.toLowerCase().includes(query)) {
+            factureRow.style.display = ''; // Afficher la ligne si elle correspond à la recherche
+          } else {
+            factureRow.style.display = 'none'; // Masquer la ligne si elle ne correspond pas à la recherche
+          }
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+  
 </head>
 <body>
   <!--Main Navigation-->
@@ -235,6 +259,8 @@ table.table .avatar {
       <!-- Search form -->
       <form class="d-none d-md-flex input-group w-auto my-auto">
         <input
+                  id="searchInput"
+        
           autocomplete="off"
           type="search"
           class="form-control rounded"
@@ -284,7 +310,7 @@ table.table .avatar {
             </tr>
         </thead>
         <tbody>
-            <tr th:each="facture : ${factures}">
+            <tr th:each="facture : ${factures}" class="facture-row" th:data-client-name="${facture.client.nom}">
                 <td th:text="${facture.numero}"></td>
                 <td th:text="${facture.dateFacture}"></td>
                 <td th:text="${facture.total}"></td>

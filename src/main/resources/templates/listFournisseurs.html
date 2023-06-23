@@ -265,6 +265,30 @@ table.table .avatar {
 	font-weight: normal;
 }	
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('searchInput');
+      var fournisseurRows = document.getElementsByClassName('fournisseur-row');
+
+      function performSearch() {
+        var query = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < fournisseurRows.length; i++) {
+          var fournisseurRow = fournisseurRows[i];
+          var fournisseurName = fournisseurRow.getAttribute('data-fournisseur-name');
+
+          if (fournisseurName.toLowerCase().includes(query)) {
+            fournisseurRow.style.display = ''; // Afficher la ligne si elle correspond à la recherche
+          } else {
+            fournisseurRow.style.display = 'none'; // Masquer la ligne si elle ne correspond pas à la recherche
+          }
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+  
 </head>
 <body>
   <!--Main Navigation-->
@@ -330,6 +354,7 @@ table.table .avatar {
       <!-- Search form -->
       <form class="d-none d-md-flex input-group w-auto my-auto">
         <input
+          id="searchInput"
           autocomplete="off"
           type="search"
           class="form-control rounded"
@@ -392,7 +417,7 @@ table.table .avatar {
         </tr>
     </thead>
     <tbody>
-        <tr th:each="fournisseur : ${fournisseurs}">
+        <tr th:each="fournisseur : ${fournisseurs}" class="fournisseur-row" th:data-fournisseur-name="${fournisseur.nom}">
             <td>
                 <span class="custom-checkbox">
                     <input type="checkbox" id="checkbox1" name="options[]" value="1">
