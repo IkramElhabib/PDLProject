@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire de vente</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Formulaire de vente</h1>
+
+        <form th:action="@{/vente}" th:object="${commande}" method="post" id="formCommande">
+            <div class="mb-3">
+                <label for="dateCommande" class="form-label">Date de commande:</label>
+                <input type="date" id="dateCommande" th:field="*{dateCommande}" name="dateCommande" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="client" class="form-label">Client:</label>
+                <select id="client" th:field="*{client.code}" name="client.code" class="form-select" required>
+                    <option value="">Sélectionner un client</option>
+                    <!-- Utilisation de th:each pour afficher les clients -->
+                    <option th:each="client : ${clients}" th:value="${client.code}" th:text="${client.nom}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="fournisseur" class="form-label">Fournisseur:</label>
+                <select id="fournisseur" th:field="*{fournisseur.code}" name="fournisseur.code" class="form-select" required>
+                    <option value="">Sélectionner un fournisseur</option>
+                    <option th:each="fournisseur : ${fournisseurs}" th:value="${fournisseur.code}" th:text="${fournisseur.nom}"></option>
+                </select>
+            </div>
+
+            <button id="clientBtn" type="button" class="btn btn-primary">Vente - Client</button>
+            <button id="fournisseurBtn" type="button" class="btn btn-primary">Achat - Fournisseur</button>
+            
+            <label for="dossier">Dossier:</label>
+	<select id="dossier" th:field="*{dossier}">
+	    <option value="">Sélectionner un dossier</option>
+	    <option th:each="dossier : ${dossiers}" th:value="${dossier.numero}" th:text="${dossier.nom}"></option>
+	</select>
+
+            <input type="submit" value="Enregistrer" class="btn btn-success">
+        </form>
+
+        <form th:action="@{/ligneCommande/ajouter}" th:object="${ligneCommande}" method="post" id="formLigneCommande">
+            <input type="hidden" id="numeroCommande" name="numero" th:value="${commande.numero}">
+
+            <div class="mb-3">
+                <label for="produit" class="form-label">Produit:</label>
+                <select id="produit" th:field="*{produit.ref}" name="produit.ref" class="form-select" required>
+                    <option value="">Sélectionner un produit</option>
+                    <!-- Utilisation de th:each pour afficher les produits -->
+                    <option th:each="produit : ${produits}" th:value="${produit.ref}" th:text="${produit.designation}" th:attr="data-prix=${produit.prix}"></option>
+                </select>
+            </div>
+
+            <input type="text" id="prixProduit" readonly class="form-control">
+
+            <div class="mb-3">
+                <label for="qte" class="form-label">Quantité:</label>
+                <input type="number" id="qte" th:field="*{qte}" name="qte" class="form-control" required>
+            </div>
+
+            <button type="button" id="btnMultiplication" class="btn btn-primary">Multiplier</button>
+
+            <div class="mb-3">
+                <label for="resultat" class="form-label">Résultat:</label>
+                <input type="text" id="resultat" th:field="*{total}" readonly class="form-control">
+            </div>
+
+            <input type="submit" value="Ajouter" class="btn btn-success">
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS (place it before the closing </body> tag) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+
+    <script>
+        var clientSelect = document.getElementById('client');
+        var fournisseurSelect = document.getElementById('fournisseur');
+        var clientBtn = document.getElementById('clientBtn');
+        var fournisseurBtn = document.getElementById('fournisseurBtn');
+
+        // Function to enable client selection and disable fournisseur selection
+        function enableClientSelection() {
+            clientSelect.disabled = false;
+            fournisseurSelect.disabled = true;
+        }
+
+        // Function to enable fournisseur selection and disable client selection
+        function enableFournisseurSelection() {
+            clientSelect.disabled = true;
+            fournisseurSelect.disabled = false;
+        }
+
+        // Event listener for client button click
+        clientBtn.addEventListener('click', enableClientSelection);
+
+        // Event listener for fournisseur button click
+        fournisseurBtn.addEventListener('click', enableFournisseurSelection);
+
+        document.getElementById("produit").addEventListener("change", function() {
+            var selectedProduct = this.options[this.selectedIndex];
+            var prixProduit = document.getElementById("prixProduit");
+            prixProduit.value = selectedProduct.getAttribute("data-prix");
+        });
+
+        document.getElementById("btnMultiplication").addEventListener("click", function() {
+            var prixProduit = parseFloat(document.getElementById("produit").options[document.getElementById("produit").selectedIndex].getAttribute("data-prix"));
+            var quantite = parseInt(document.getElementById("qte").value);
+            var resultat = prixProduit * quantite;
+            document.getElementById("resultat").value = resultat.toFixed(2); // Formater le résultat avec deux décimales
+        });
+    </script>
+</body>
+</html>

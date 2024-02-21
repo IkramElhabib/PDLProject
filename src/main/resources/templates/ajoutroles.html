@@ -1,0 +1,34 @@
+<!-- ajoutroles.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Role</title>
+</head>
+<body>
+    <h1>Add Role</h1>
+    
+    <form th:action="@{/roles/add}" th:object="${roless}" method="post">
+   <div style="display: none;">
+        <label for="id">ID:</label>
+        <input type="number" id="id" th:field="*{id}" readonly>
+    </div>
+    <div>
+    <label for="role">Role:</label>
+    <input type="text" id="role" th:field="${roless.role}" required>
+</div>
+    
+    <div>
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" th:field="*{designation}" required>
+        <span th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></span>
+    </div>
+    
+    <div>
+        <button type="submit">Add</button>
+    </div>
+</form>
+
+
+</body>
+</html>
